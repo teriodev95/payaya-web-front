@@ -1,12 +1,16 @@
 {
-  "name": "metronic-landing-saas",
-  "version": "9.3.0",
+  "name": "payaya-web-front",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "pages:build": "npx @cloudflare/next-on-pages"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",

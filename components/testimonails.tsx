@@ -4,7 +4,6 @@ import Marquee from "@/components/ui/marquee";
 import { CustomBadge } from '@/components/custom/badge';
 import { CustomTitle } from '@/components/custom/title';
 import { CustomSubtitle } from '@/components/custom/subtitle';
-import Image from 'next/image';
 
 const Testimonials = () => {
   const testimonials = [
