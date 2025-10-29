@@ -81,7 +81,7 @@ const HowItWorks = () => {
   };
 
   return (
-    <section className="py-24 border-b border-border/50">
+    <section id="how-it-works" className="py-24 border-b border-border/50">
       <div className="container mx-auto px-6">
         {/* Header */}
         <motion.div 

@@ -32,8 +32,9 @@ const Header = () => {
       }
 
       // Track active section based on scroll position
-      const sections = ['how-we-do-it', 'features', 'how-it-works', 'pricing', 'budget-calculator', 'faq', 'contact'];
-      const scrollPosition = window.scrollY + 200;
+      const sections = ['how-we-do-it', 'how-it-works', 'features', 'pricing', 'budget-calculator', 'faq', 'contact'];
+      const scrollPosition = window.scrollY + 100; // Reduced offset for better detection
+
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -72,9 +73,13 @@ const Header = () => {
       const targetId = sectionMap[item] || item.toLowerCase().replace(' ', '-');
       const element = document.getElementById(targetId);
       if (element) {
-        element.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
+        const headerOffset = 80; // Height of fixed header
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
         });
       }
     }
