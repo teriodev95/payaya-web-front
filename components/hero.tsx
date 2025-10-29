@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Gift } from 'lucide-react';
-import { WordRotate } from '@/components/magicui/word-rotate';
 import { useState } from 'react';
 import Link from 'next/link';
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
@@ -9,7 +8,6 @@ import { Star } from '@/components/custom/star';
 import Image from 'next/image';
 
 const Hero = () => {
-  const rotatingWords = ["tu equipo", "tu plantilla",  "desde el móvil"];
 
   const people = [
     {
@@ -219,15 +217,9 @@ const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="font-black flex flex-col items-center justify-center text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 lg:mb-8 leading-[1.2] px-4"
+            className="font-black text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 lg:mb-8 leading-[1.2] px-4 bg-gradient-to-r from-[#262F3F] via-[#3a4456] to-[#262F3F] bg-clip-text text-transparent"
           >
-            <span className="bg-gradient-to-r from-[#262F3F] via-[#3a4456] to-[#262F3F] bg-clip-text text-transparent mb-2">
-              Capacita a
-            </span>
-            <WordRotate
-              words={rotatingWords}
-              className="bg-gradient-to-r from-[#F6BE17] to-[#d9a614] bg-clip-text text-transparent"
-            />
+            Convierte el conocimiento de tu empresa en cursos fáciles de aprender
           </motion.h1>
 
           {/* Subtitle */}
@@ -235,10 +227,11 @@ const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-base md:text-xl text-muted-foreground mb-6 md:mb-10 max-w-[700px] mx-auto leading-relaxed"
+            className="text-base md:text-xl text-muted-foreground mb-6 md:mb-10 max-w-[800px] mx-auto leading-relaxed"
           >
-            Un LMS corporativo como PWA, pensado para el día a día: cursos, exámenes y certificados automáticos.
-            Desde <strong className="text-[#F6BE17]">$98 MXN por usuario activo/mes</strong> (paquete inicial: 450 usuarios).
+            Graba tus propios cursos, capacita a tu equipo y mide resultados.
+            Payaya convierte tus procesos internos en lecciones interactivas con exámenes y certificados automáticos.
+            <strong className="text-[#F6BE17]"> Desde $98 MXN por usuario activo/mes</strong>.
           </motion.p>
 
           <motion.div
@@ -248,14 +241,14 @@ const Hero = () => {
             className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10 px-4"
           >
             <Button size="lg" className="cursor-pointer hover:[&_svg]:translate-x-1 w-full sm:w-auto">
-              Solicitar demo
+              Agendar demostración
               <ArrowRight className="h-5 w-5 transition-transform" />
             </Button>
 
             <Button size="lg" variant="outline" className="cursor-pointer hover:[&_svg]:-translate-y-1 w-full sm:w-auto" asChild>
               <Link href="#pricing">
                 <Gift className="h-5 w-5 transition-transform opacity-60" />
-                Ver plan y detalles
+                Ver precios
               </Link>
             </Button>
           </motion.div>
@@ -277,7 +270,7 @@ const Hero = () => {
                 ))}
               </div>
             </div>   
-            <div className="text-center text-muted-foreground text-sm font-medium">Confianza de miles de empresas en México</div>
+            <div className="text-center text-muted-foreground text-sm font-medium">Empresas en México ya capacitan con Payaya</div>
           </motion.div>
 
           {/* Hero Illustration */}
