@@ -140,7 +140,7 @@ const Features = () => {
           })}
         </div>
 
-        {/* Bottom Sheet Modal */}
+        {/* Modal - Bottom Sheet en móvil, Modal centrado en desktop */}
         <AnimatePresence>
           {selectedFeature !== null && (
             <>
@@ -153,56 +153,76 @@ const Features = () => {
                 className="fixed inset-0 bg-black/50 z-50"
               />
 
-              {/* Bottom Sheet */}
-              <motion.div
-                initial={{ y: "100%" }}
-                animate={{ y: 0 }}
-                exit={{ y: "100%" }}
-                transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="fixed bottom-0 left-0 right-0 bg-background rounded-t-3xl shadow-2xl z-50 max-h-[80vh] overflow-hidden"
-              >
-                <div className="p-6 overflow-y-auto max-h-[80vh]">
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 rounded-xl bg-[#F6BE17]/10 flex items-center justify-center">
-                        {React.createElement(features[selectedFeature].icon, {
-                          className: "w-7 h-7 text-[#262F3F]"
-                        })}
+              {/* Modal Container - Responsive */}
+              <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 pointer-events-none">
+                <motion.div
+                  initial={{ y: "100%", opacity: 0, scale: 0.95 }}
+                  animate={{
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    transition: {
+                      type: "spring",
+                      damping: 25,
+                      stiffness: 300
+                    }
+                  }}
+                  exit={{
+                    y: "100%",
+                    opacity: 0,
+                    scale: 0.95,
+                    transition: {
+                      duration: 0.2
+                    }
+                  }}
+                  className="bg-background rounded-t-3xl md:rounded-2xl shadow-2xl w-full md:max-w-lg max-h-[80vh] md:max-h-[600px] overflow-hidden pointer-events-auto"
+                >
+                  <div className="p-6 md:p-8 overflow-y-auto max-h-[80vh] md:max-h-[600px]">
+                    {/* Handle bar - solo móvil */}
+                    <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted mb-4 md:hidden" />
+
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 rounded-xl bg-[#F6BE17]/10 flex items-center justify-center flex-shrink-0">
+                          {React.createElement(features[selectedFeature].icon, {
+                            className: "w-7 h-7 text-[#262F3F]"
+                          })}
+                        </div>
+                        <div>
+                          <h3 className="text-xl md:text-2xl font-bold text-foreground mb-1">
+                            {features[selectedFeature].title}
+                          </h3>
+                          <span className="text-sm font-semibold text-[#F6BE17]">
+                            {features[selectedFeature].stats}
+                          </span>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="text-2xl font-bold text-foreground mb-1">
-                          {features[selectedFeature].title}
-                        </h3>
-                        <span className="text-sm font-semibold text-[#F6BE17]">
-                          {features[selectedFeature].stats}
-                        </span>
+                      <button
+                        onClick={() => setSelectedFeature(null)}
+                        className="w-10 h-10 rounded-full hover:bg-muted flex items-center justify-center transition-colors flex-shrink-0"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    {/* Content */}
+                    <div className="space-y-4">
+                      <p className="text-base text-muted-foreground leading-relaxed">
+                        {features[selectedFeature].fullDescription}
+                      </p>
+
+                      {/* CTA */}
+                      <div className="pt-4">
+                        <Button className="w-full bg-[#262F3F] hover:bg-[#262F3F]/90 text-white" size="lg">
+                          Agendar demostración
+                          <ArrowRight className="w-5 h-5 ml-2" />
+                        </Button>
                       </div>
                     </div>
-                    <button
-                      onClick={() => setSelectedFeature(null)}
-                      className="w-10 h-10 rounded-full hover:bg-muted flex items-center justify-center transition-colors"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
                   </div>
-
-                  {/* Content */}
-                  <div className="space-y-4">
-                    <p className="text-base text-muted-foreground leading-relaxed">
-                      {features[selectedFeature].fullDescription}
-                    </p>
-
-                    {/* CTA */}
-                    <div className="pt-4">
-                      <Button className="w-full" size="lg">
-                        Agendar demostración
-                        <ArrowRight className="w-5 h-5 ml-2" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </div>
             </>
           )}
         </AnimatePresence>
