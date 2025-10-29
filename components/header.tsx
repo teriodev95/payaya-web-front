@@ -1,14 +1,21 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu } from 'lucide-react';
-import { RainbowButton } from '@/components/magicui/rainbow-button';
 import { Drawer, DrawerTitle, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import Logo from '@/components/logo';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 const Header = () => {
-  const navItems = ['Inicio', 'Características', 'Precios', 'FAQ', 'Contacto'];
+  const navItems = [
+    'Inicio',
+    'Cómo lo hacemos',
+    'Beneficios',
+    'Precios',
+    'Calculadora',
+    'FAQ',
+    'Contacto'
+  ];
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +24,7 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-      
+
       // Always set 'home' as active when at the very top
       if (window.scrollY < 50) {
         setActiveSection('home');
@@ -25,7 +32,7 @@ const Header = () => {
       }
 
       // Track active section based on scroll position
-      const sections = ['features', 'how-it-works', 'pricing', 'faq', 'contact'];
+      const sections = ['how-we-do-it', 'features', 'how-it-works', 'pricing', 'budget-calculator', 'faq', 'contact'];
       const scrollPosition = window.scrollY + 200;
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -40,11 +47,11 @@ const Header = () => {
       // Do not update activeSection if not at top and not in any section (last matched section stays active)
 
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeSection]);  
-  
+  }, [activeSection]);
+
   const handleNavClick = (item: string) => {
     setIsOpen(false);
     if (item === 'Inicio') {
@@ -55,8 +62,10 @@ const Header = () => {
       });
     } else {
       const sectionMap: { [key: string]: string } = {
-        'Características': 'features',
+        'Cómo lo hacemos': 'how-we-do-it',
+        'Beneficios': 'features',
         'Precios': 'pricing',
+        'Calculadora': 'budget-calculator',
         'FAQ': 'faq',
         'Contacto': 'contact'
       };
@@ -74,8 +83,10 @@ const Header = () => {
   const isActiveItem = (item: string) => {
     const sectionMap: { [key: string]: string } = {
       'Inicio': 'home',
-      'Características': 'features',
+      'Cómo lo hacemos': 'how-we-do-it',
+      'Beneficios': 'features',
       'Precios': 'pricing',
+      'Calculadora': 'budget-calculator',
       'FAQ': 'faq',
       'Contacto': 'contact'
     };
@@ -130,30 +141,39 @@ const Header = () => {
           <div className="md:hidden flex items-center space-x-4">
             <Drawer open={isOpen} onOpenChange={setIsOpen}>
               <DrawerTrigger asChild>
-                <Button className="cursor-pointer text-muted-foreground hover:bg-transparent hover:text-foreground" variant="ghost" size="icon">
-                  <Menu className="size-4"/>
+                <Button className="cursor-pointer text-foreground hover:bg-transparent hover:text-[#F6BE17]" variant="ghost" size="icon">
+                  <Menu className="size-6"/>
                 </Button>
               </DrawerTrigger>
-              <DrawerContent className="px-6 pb-8">
-                <DrawerTitle></DrawerTitle>
-                <nav className="flex flex-col space-y-4 mt-6">
+              <DrawerContent className="px-6 pb-8 bg-background">
+                <DrawerTitle className="sr-only">Menú de navegación</DrawerTitle>
+
+                {/* Handle bar */}
+                <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted mb-6 mt-4" />
+
+                <nav className="flex flex-col space-y-2">
                   {navItems.map((item) => (
-                    <Button 
+                    <button
                       key={item}
                       onClick={() => handleNavClick(item)}
-                      variant="ghost"
                       className={cn(
-                        'w-full justify-start hover:text-[#F6BE17]',
-                        isActiveItem(item) && 'text-[#F6BE17] font-medium'
+                        'w-full text-left px-4 py-3 rounded-lg transition-all text-base font-medium',
+                        isActiveItem(item)
+                          ? 'bg-[#F6BE17]/10 text-[#F6BE17]'
+                          : 'text-foreground hover:bg-muted hover:text-[#F6BE17]'
                       )}
                     >
                       {item}
-                    </Button>
+                    </button>
                   ))}
                   <div className="pt-4">
-                    <RainbowButton className="w-full" onClick={() => setIsOpen(false)}>
+                    <Button
+                      className="w-full bg-[#262F3F] hover:bg-[#262F3F]/90 text-white"
+                      size="lg"
+                      onClick={() => setIsOpen(false)}
+                    >
                       Solicitar demo
-                    </RainbowButton>
+                    </Button>
                   </div>
                 </nav>
               </DrawerContent>

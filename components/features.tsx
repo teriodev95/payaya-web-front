@@ -1,151 +1,237 @@
 
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { CustomBadge } from '@/components/custom/badge';
 import { CustomTitle } from '@/components/custom/title';
 import { CustomSubtitle } from '@/components/custom/subtitle';
-import { Zap, Shield, BarChart3, Users } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Zap, Shield, BarChart3, Users, Brain, Award, RefreshCw, Palette, ArrowRight, X } from 'lucide-react';
+import Link from 'next/link';
 
 const Features = () => {
+  const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
+
   const features = [
     {
-      id: 'movilidad-total',
       icon: Zap,
       title: 'Movilidad total',
-      description: 'Sin computadoras necesarias. Tu equipo puede instalar la PWA desde el navegador en cualquier dispositivo móvil y capacitarse donde sea.',
-      stats: '100%',
-      metric: 'Móvil',
-      colors: {
-        bg: 'bg-blue-100/40 dark:bg-blue-950/40',
-        icon: 'text-blue-600',
-        hover: 'hover:border-blue-500',
-        shadow: 'group-hover:shadow-blue-500/30',
-        gradient: 'from-blue-500 via-blue-600 to-blue-700',
-        text: 'group-hover:text-blue-700'
-      }
+      shortDescription: 'Capacita desde cualquier dispositivo móvil sin depender de computadoras.',
+      fullDescription: 'Tu equipo puede acceder a los cursos desde cualquier dispositivo móvil con nuestra app PWA y aprender en cualquier momento y lugar. Capacitación sin límites, desde cualquier pantalla.',
+      stats: '100% Móvil'
     },
     {
-      id: 'seguridad',
       icon: Shield,
       title: 'Seguro por diseño',
-      description: 'Cifrado, roles y cumplimiento normativo. Protege la información de tu empresa con seguridad de nivel empresarial y auditoría completa.',
-      stats: '99.9%',
-      metric: 'Disponibilidad',
-      colors: {
-        bg: 'bg-red-100/40 dark:bg-red-950/40',
-        icon: 'text-red-600',
-        hover: 'hover:border-red-500',
-        shadow: 'group-hover:shadow-red-500/30',
-        gradient: 'from-red-500 via-red-600 to-red-700',
-        text: 'group-hover:text-red-700'
-      }
+      shortDescription: 'Cifrado, roles y cumplimiento normativo de nivel empresarial.',
+      fullDescription: 'Protege la información de tu organización con seguridad de nivel empresarial y auditorías completas. Confianza y protección en cada clic.',
+      stats: '99.9% Disponibilidad'
     },
     {
-      id: 'metricas-claras',
       icon: BarChart3,
       title: 'Métricas claras',
-      description: 'Progreso, aprobaciones y desempeño por área. Obtén información valiosa sobre la capacitación de tu equipo con reportes detallados.',
-      stats: '100%',
-      metric: 'Trazabilidad',
-      colors: {
-        bg: 'bg-emerald-100/40 dark:bg-emerald-950/40',
-        icon: 'text-emerald-600',
-        hover: 'hover:border-emerald-500',
-        shadow: 'group-hover:shadow-emerald-500/30',
-        gradient: 'from-emerald-500 via-emerald-600 to-emerald-700',
-        text: 'group-hover:text-emerald-700'
-      }
+      shortDescription: 'Sigue el progreso, aprobaciones y desempeño con reportes automáticos.',
+      fullDescription: 'Obtén datos útiles para medir el impacto real de la capacitación. Información que impulsa decisiones con trazabilidad completa del aprendizaje.',
+      stats: '100% Trazabilidad'
     },
     {
-      id: 'escalabilidad',
       icon: Users,
-      title: 'Escalable',
-      description: 'Crece con tu plantilla sin fricción. Desde 450 hasta miles de usuarios activos, el sistema se adapta a las necesidades de tu empresa.',
-      stats: '3,000+',
-      metric: 'Usuarios',
-      colors: {
-        bg: 'bg-amber-100/40 dark:bg-amber-950/20',
-        icon: 'text-amber-600',
-        hover: 'hover:border-amber-500',
-        shadow: 'group-hover:shadow-amber-500/30',
-        gradient: 'from-amber-500 via-amber-600 to-amber-700',
-        text: 'group-hover:text-amber-700'
-      }
+      title: 'Escalable y flexible',
+      shortDescription: 'Crece de pequeños equipos a miles de usuarios activos sin fricción.',
+      fullDescription: 'El sistema se adapta a las necesidades de tu empresa sin configuraciones complejas. Escala tu capacitación al ritmo de tu organización.',
+      stats: '3,000+ Usuarios'
+    },
+    {
+      icon: Brain,
+      title: 'Cursos personalizados',
+      shortDescription: 'Contenido alineado con los procesos reales de tu organización.',
+      fullDescription: 'Cada curso refleja cómo realmente se trabaja en tu entorno. Capacitación hecha para ti, no genérica.',
+      stats: 'A tu medida'
+    },
+    {
+      icon: Award,
+      title: 'Certificados automáticos',
+      shortDescription: 'Certificados generados y enviados automáticamente al aprobar.',
+      fullDescription: 'Define un porcentaje mínimo de calificación para aprobar cada curso. Reconocimiento instantáneo y sin gestión manual.',
+      stats: 'Automatizado'
+    },
+    {
+      icon: RefreshCw,
+      title: 'Revalidaciones automáticas',
+      shortDescription: 'Configura recertificaciones periódicas de manera automática.',
+      fullDescription: 'Payaya se encarga de notificar a los usuarios cuando deban repetir cursos. Mantén vigente el conocimiento clave de tu organización.',
+      stats: 'Programable'
+    },
+    {
+      icon: Palette,
+      title: 'Marca blanca',
+      shortDescription: 'Personaliza con los colores y logotipo de tu organización.',
+      fullDescription: 'Haz que Payaya luzca como tu propia academia interna. Tu imagen, tu experiencia, tu capacitación.',
+      stats: 'Personalizable'
     }
   ];
 
   return (
     <section id="features" className="py-24 bg-background border-b border-border/50">
       <div className="container mx-auto px-6">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          viewport={{ once: true }} className="flex items-center justify-center flex-col text-center gap-5 mb-16">
+          viewport={{ once: true }}
+          className="flex items-center justify-center flex-col text-center gap-5 mb-16"
+        >
           <CustomBadge>
-            Beneficios clave
+            Beneficios
           </CustomBadge>
 
           <CustomTitle>
-            Beneficios que impulsan resultados
+            Beneficios que fortalecen el aprendizaje dentro de tu organización
           </CustomTitle>
 
           <CustomSubtitle>
-            Una plataforma LMS móvil diseñada para empresas que quieren capacitar a su equipo
-            con flexibilidad, seguridad y resultados medibles.
+            Diseñamos una plataforma que conecta el conocimiento de tus expertos con la tecnología necesaria para capacitar, evaluar y certificar sin complicaciones.
           </CustomSubtitle>
         </motion.div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {features.map((feature, index) => (
-            <motion.div
-              key={feature.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -8 }}
-              className="group"
-            >
-              <Card className={cn('h-full bg-background border border-border transition-all duration-500 p-8 relative overflow-hidden hover:shadow-lg', feature.colors.hover)}>
-                <CardContent className="p-0">
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-8">
-                    <div className={cn(
-                      'size-12 rounded-full flex items-center justify-center group-hover:scale-110 transition-all duration-500 relative overflow-hidden', 
-                      feature.colors.bg
-                      )}
-                    >
-                      <feature.icon className={cn('size-5 relative z-10', feature.colors.icon)} />
+        {/* Features Grid - Minimalista */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-12">
+          {features.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <Card className="h-full border border-border hover:border-[#F6BE17] transition-all duration-300 hover:shadow-md bg-background group cursor-pointer">
+                  <CardContent className="p-6 h-full flex flex-col">
+                    {/* Icon */}
+                    <div className="mb-4">
+                      <div className="w-12 h-12 rounded-lg bg-[#F6BE17]/10 flex items-center justify-center group-hover:bg-[#F6BE17]/20 transition-colors">
+                        <Icon className="w-6 h-6 text-[#262F3F]" />
+                      </div>
                     </div>
-                    
-                    <div className="text-right">
-                      <div className="text-2xl font-semibold text-foreground mb-1">{feature.stats}</div>
-                      <div className="text-sm text-muted-foreground font-medium uppercase tracking-wide">{feature.metric}</div>
+
+                    {/* Title */}
+                    <h3 className="text-lg font-bold text-foreground mb-3 leading-tight">
+                      {feature.title}
+                    </h3>
+
+                    {/* Short Description */}
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-grow">
+                      {feature.shortDescription}
+                    </p>
+
+                    {/* CTA Button */}
+                    <button
+                      onClick={() => setSelectedFeature(index)}
+                      className="text-sm font-semibold text-[#F6BE17] hover:text-[#d9a614] flex items-center gap-1 group-hover:gap-2 transition-all"
+                    >
+                      Ver más
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Bottom Sheet Modal */}
+        <AnimatePresence>
+          {selectedFeature !== null && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSelectedFeature(null)}
+                className="fixed inset-0 bg-black/50 z-50"
+              />
+
+              {/* Bottom Sheet */}
+              <motion.div
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "100%" }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="fixed bottom-0 left-0 right-0 bg-background rounded-t-3xl shadow-2xl z-50 max-h-[80vh] overflow-hidden"
+              >
+                <div className="p-6 overflow-y-auto max-h-[80vh]">
+                  {/* Header */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-14 rounded-xl bg-[#F6BE17]/10 flex items-center justify-center">
+                        {React.createElement(features[selectedFeature].icon, {
+                          className: "w-7 h-7 text-[#262F3F]"
+                        })}
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold text-foreground mb-1">
+                          {features[selectedFeature].title}
+                        </h3>
+                        <span className="text-sm font-semibold text-[#F6BE17]">
+                          {features[selectedFeature].stats}
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setSelectedFeature(null)}
+                      className="w-10 h-10 rounded-full hover:bg-muted flex items-center justify-center transition-colors"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Content */}
+                  <div className="space-y-4">
+                    <p className="text-base text-muted-foreground leading-relaxed">
+                      {features[selectedFeature].fullDescription}
+                    </p>
+
+                    {/* CTA */}
+                    <div className="pt-4">
+                      <Button className="w-full" size="lg">
+                        Agendar demostración
+                        <ArrowRight className="w-5 h-5 ml-2" />
+                      </Button>
                     </div>
                   </div>
-                  
-                  {/* Content */}
-                  <h3 className="text-2xl font-bold text-foreground mb-6 group-hover:text-foreground transition-colors leading-tight">
-                    {feature.title}
-                  </h3>
-                  
-                  <p className="text-muted-foreground leading-relaxed font-medium">
-                    {feature.description}
-                  </p>
-                </CardContent>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
 
-                {/* Hover effect gradient border */}
-                <div className={cn('absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left', feature.colors.gradient, feature.colors.gradient)} />
-                
-                {/* Subtle gradient overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-slate-50/0 to-slate-100/0 group-hover:from-slate-50/30 group-hover:to-slate-100/10 dark:from-slate-900/0 dark:to-slate-800/0 transition-all duration-500 pointer-events-none" />
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="flex flex-col items-center gap-6"
+        >
+          <p className="text-lg text-center text-foreground/80 max-w-3xl font-medium">
+            Cada organización aprende diferente. En Payaya, te damos las herramientas para enseñar como tú quieras.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Button size="lg" className="cursor-pointer hover:[&_svg]:translate-x-1 w-full sm:w-auto">
+              Agendar demostración
+              <ArrowRight className="h-5 w-5 transition-transform" />
+            </Button>
+
+            <Button size="lg" variant="outline" className="cursor-pointer w-full sm:w-auto" asChild>
+              <Link href="#features">
+                Ver todos los beneficios
+              </Link>
+            </Button>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
