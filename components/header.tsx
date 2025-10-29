@@ -54,35 +54,40 @@ const Header = () => {
   }, [activeSection]);
 
   const handleNavClick = (item: string) => {
+    // Close drawer first
     setIsOpen(false);
-    if (item === 'Inicio') {
-      // Scroll to top of page for Home link
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    } else {
-      const sectionMap: { [key: string]: string } = {
-        'Cómo lo hacemos': 'how-we-do-it',
-        'Beneficios': 'features',
-        'Precios': 'pricing',
-        'Calculadora': 'budget-calculator',
-        'FAQ': 'faq',
-        'Contacto': 'contact'
-      };
-      const targetId = sectionMap[item] || item.toLowerCase().replace(' ', '-');
-      const element = document.getElementById(targetId);
-      if (element) {
-        const headerOffset = 80; // Height of fixed header
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
+    // Wait for drawer animation to complete before scrolling
+    setTimeout(() => {
+      if (item === 'Inicio') {
+        // Scroll to top of page for Home link
         window.scrollTo({
-          top: offsetPosition,
+          top: 0,
           behavior: 'smooth'
         });
+      } else {
+        const sectionMap: { [key: string]: string } = {
+          'Cómo lo hacemos': 'how-we-do-it',
+          'Beneficios': 'features',
+          'Precios': 'pricing',
+          'Calculadora': 'budget-calculator',
+          'FAQ': 'faq',
+          'Contacto': 'contact'
+        };
+        const targetId = sectionMap[item] || item.toLowerCase().replace(' ', '-');
+        const element = document.getElementById(targetId);
+        if (element) {
+          const headerOffset = 80; // Height of fixed header
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
       }
-    }
+    }, 300); // Wait 300ms for drawer close animation
   };
 
   const isActiveItem = (item: string) => {
