@@ -19,6 +19,8 @@ import Link from 'next/link';
 const formSchema = z.object({
   name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
   email: z.string().email('Por favor ingresa un email válido'),
+  phone: z.string().optional(),
+  company: z.string().optional(),
   subject: z.string().min(5, 'El asunto debe tener al menos 5 caracteres'),
   message: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres'),
 });
@@ -31,21 +33,47 @@ const Contact = () => {
     defaultValues: {
       name: '',
       email: '',
+      phone: '',
+      company: '',
       subject: '',
       message: '',
     },
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      // Map form values to API format
+      const payload = {
+        nombre: values.name,
+        email: values.email,
+        telefono: values.phone || '',
+        empresa: values.company || '',
+        mensaje: `${values.subject}\n\n${values.message}`,
+        presupuesto: '' // Optional field, can be added later if needed
+      };
 
-    toast.success("¡Mensaje enviado! Gracias por contactarnos. Te responderemos pronto.");
+      const response = await fetch('https://forms-cloudflare-recibirdata.clvrt.workers.dev/api/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
 
-    form.reset();
-    setIsSubmitting(false);
+      if (!response.ok) {
+        throw new Error('Error al enviar el mensaje');
+      }
+
+      toast.success("¡Mensaje enviado! Gracias por contactarnos. Te responderemos en menos de 24 horas.");
+      form.reset();
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error("Hubo un error al enviar el mensaje. Por favor intenta de nuevo o contáctanos por WhatsApp.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -218,6 +246,36 @@ const Contact = () => {
                         </FormItem>
                       )}
                     />
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Teléfono <span className="text-muted-foreground text-xs">(opcional)</span></FormLabel>
+                            <FormControl>
+                              <Input placeholder="+52 55 1234 5678" type="tel" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="company"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Empresa <span className="text-muted-foreground text-xs">(opcional)</span></FormLabel>
+                            <FormControl>
+                              <Input placeholder="Nombre de tu empresa" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
                     <FormField
                       control={form.control}
