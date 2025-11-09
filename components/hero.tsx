@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { Star } from '@/components/custom/star';
-import Image from 'next/image';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 
