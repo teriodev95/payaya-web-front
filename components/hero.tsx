@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Play, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { Star } from '@/components/custom/star';
@@ -76,14 +76,14 @@ const Hero = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   // Detect mobile on mount
-  useState(() => {
+  useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  });
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = (e.target as HTMLDivElement).getBoundingClientRect();
