@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,11 +19,10 @@ import Link from 'next/link';
 
 const formSchema = z.object({
   name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
-  email: z.string().email('Por favor ingresa un email válido'),
-  phone: z.string().optional(),
-  company: z.string().optional(),
-  subject: z.string().min(5, 'El asunto debe tener al menos 5 caracteres'),
-  message: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres'),
+  phone: z.string().min(10, 'El teléfono debe tener al menos 10 caracteres'),
+  website: z.string().url('Por favor ingresa una URL válida').or(z.string().length(0)),
+  subject: z.string().min(1, 'Por favor selecciona un asunto'),
+  message: z.string().optional(),
 });
 
 const Contact = () => {
@@ -32,9 +32,8 @@ const Contact = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      email: '',
       phone: '',
-      company: '',
+      website: '',
       subject: '',
       message: '',
     },
@@ -47,11 +46,11 @@ const Contact = () => {
       // Map form values to API format
       const payload = {
         nombre: values.name,
-        email: values.email,
-        telefono: values.phone || '',
-        empresa: values.company || '',
-        mensaje: `${values.subject}\n\n${values.message}`,
-        presupuesto: '' // Optional field, can be added later if needed
+        email: 'adrian@payaya.cc',
+        telefono: values.phone,
+        empresa: values.website || '',
+        mensaje: `Asunto: ${values.subject}\n\n${values.message || 'Sin mensaje adicional'}`,
+        presupuesto: ''
       };
 
       const response = await fetch('https://forms-cloudflare-recibirdata.clvrt.workers.dev/api/submit', {
@@ -66,7 +65,7 @@ const Contact = () => {
         throw new Error('Error al enviar el mensaje');
       }
 
-      toast.success("¡Mensaje enviado! Gracias por contactarnos. Te responderemos en menos de 24 horas.");
+      toast.success("¡Mensaje enviado! Gracias por contactarnos. Te responderemos pronto.");
       form.reset();
     } catch (error) {
       console.error('Error:', error);
@@ -76,12 +75,20 @@ const Contact = () => {
     }
   };
 
+  const subjectOptions = [
+    'Quiero una demo',
+    'Tengo dudas sobre precios',
+    'Necesito cotizar un curso',
+    'Quiero información sobre la plataforma',
+    'Otro asunto'
+  ];
+
   const contactInfo = [
     {
       icon: Mail,
       title: 'Email',
-      content: 'contacto@payaya.mx',
-      href: 'mailto:contacto@payaya.mx'
+      content: 'adrian@payaya.cc',
+      href: 'mailto:adrian@payaya.cc'
     },
     {
       icon: MapPin,
@@ -235,47 +242,31 @@ const Contact = () => {
 
                     <FormField
                       control={form.control}
-                      name="email"
+                      name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>Teléfono</FormLabel>
                           <FormControl>
-                            <Input placeholder="Escribe tu correo de contacto" type="email" {...field} />
+                            <Input placeholder="+52 55 1234 5678" type="tel" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <FormField
-                        control={form.control}
-                        name="phone"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Teléfono <span className="text-muted-foreground text-xs">(opcional)</span></FormLabel>
-                            <FormControl>
-                              <Input placeholder="+52 55 1234 5678" type="tel" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="company"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Empresa <span className="text-muted-foreground text-xs">(opcional)</span></FormLabel>
-                            <FormControl>
-                              <Input placeholder="Nombre de tu empresa" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                    <FormField
+                      control={form.control}
+                      name="website"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Página web <span className="text-muted-foreground text-xs">(opcional)</span></FormLabel>
+                          <FormControl>
+                            <Input placeholder="https://tu-empresa.com" type="url" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
                     <FormField
                       control={form.control}
@@ -283,9 +274,20 @@ const Contact = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Asunto</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Por ejemplo: Quiero una demo / Tengo dudas sobre precios" {...field} />
-                          </FormControl>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Selecciona un asunto" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {subjectOptions.map((option) => (
+                                <SelectItem key={option} value={option}>
+                                  {option}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -296,7 +298,7 @@ const Contact = () => {
                       name="message"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Mensaje</FormLabel>
+                          <FormLabel>Mensaje <span className="text-muted-foreground text-xs">(opcional)</span></FormLabel>
                           <FormControl>
                             <Textarea
                               placeholder="Cuéntanos más sobre tu proyecto o qué te gustaría lograr con Payaya"
@@ -319,7 +321,7 @@ const Contact = () => {
                         'Enviando...'
                       ) : (
                         <>
-                          Agendar mi demo
+                          Enviar
                           <Send className="w-4 h-4 ml-2" />
                         </>
                       )}
