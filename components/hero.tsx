@@ -297,21 +297,49 @@ const Hero = () => {
             <div className="text-center text-muted-foreground text-sm font-medium">Empresas en México ya capacitan con Payaya</div>
           </motion.div>
 
-          {/* Hero Illustration */}
+          {/* Hero Video */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="relative max-w-2xl mx-auto"
+            className="relative max-w-4xl mx-auto"
           >
-            <Image
-              src="/Facetime-Meeting-2--Streamline-Brooklyn.svg"
-              alt="Video meeting illustration"
-              width={600}
-              height={600}
-              className="w-full h-auto"
-              priority
-            />
+            <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl border-2 border-border/50 group">
+              <video
+                controls
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+                poster="/Facetime-Meeting-2--Streamline-Brooklyn.svg"
+              >
+                <source src="https://files.xpress1.cc/Payaya-video-uno.mp4" type="video/mp4" />
+                Tu navegador no soporta el elemento de video.
+              </video>
+
+              {/* Expand button overlay */}
+              <button
+                onClick={() => setShowVideoModal(true)}
+                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-[#262F3F]/80 backdrop-blur-sm flex items-center justify-center hover:bg-[#262F3F] transition-all opacity-0 group-hover:opacity-100 z-10"
+                aria-label="Ver en pantalla completa"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-white"
+                >
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+              </button>
+            </div>
           </motion.div>
         </div>
       </div>
