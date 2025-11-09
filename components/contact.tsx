@@ -7,10 +7,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Mail, MapPin, MessageCircle, Send } from 'lucide-react';
+import { Mail, MapPin, MessageCircle, Send, Facebook, CheckCircle2, Clock, Zap } from 'lucide-react';
 import { toast } from "sonner";
 import { CustomBadge } from '@/components/custom/badge';
 import { CustomSubtitle } from '@/components/custom/subtitle';
@@ -27,6 +28,8 @@ const formSchema = z.object({
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [submittedName, setSubmittedName] = useState('');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,7 +68,9 @@ const Contact = () => {
         throw new Error('Error al enviar el mensaje');
       }
 
-      toast.success("¡Mensaje enviado! Gracias por contactarnos. Te responderemos pronto.");
+      // Store name and show success modal
+      setSubmittedName(values.name.split(' ')[0]); // First name only
+      setShowSuccessModal(true);
       form.reset();
     } catch (error) {
       console.error('Error:', error);
@@ -212,6 +217,39 @@ const Contact = () => {
                   </Card>
                 </Link>
               </motion.div>
+
+              {/* Facebook Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                viewport={{ once: true }}
+              >
+                <Link
+                  href="https://www.facebook.com/profile.php?id=61583637895869"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Card className="border-2 border-[#1877F2]/20 hover:border-[#1877F2] transition-all hover:shadow-md cursor-pointer group bg-gradient-to-br from-background to-[#1877F2]/5">
+                    <CardContent className="p-4 flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-[#1877F2]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#1877F2]/20 transition-colors">
+                        <Facebook className="w-5 h-5 text-[#1877F2]" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-foreground mb-1 group-hover:text-[#1877F2] transition-colors">
+                          Facebook
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          Síguenos en Facebook
+                        </p>
+                      </div>
+                      <div className="text-[#1877F2] group-hover:translate-x-1 transition-transform">
+                        →
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
 
@@ -338,6 +376,70 @@ const Contact = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Success Modal */}
+      <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader className="text-center sm:text-center">
+            <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-[#25D366]/10 flex items-center justify-center">
+              <CheckCircle2 className="w-10 h-10 text-[#25D366]" />
+            </div>
+            <DialogTitle className="text-2xl font-bold text-center">
+              ¡Listo, {submittedName}! Tu mensaje fue recibido
+            </DialogTitle>
+            <DialogDescription className="text-base text-center pt-4">
+              Nuestro equipo ya tiene tu información y te contactará en las próximas 24 horas.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3 pt-2">
+            <div className="flex items-start gap-3 text-left">
+              <div className="w-10 h-10 rounded-lg bg-[#F6BE17]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Clock className="w-5 h-5 text-[#262F3F]" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground text-sm">Respuesta rápida garantizada</p>
+                <p className="text-sm text-muted-foreground">Te contactaremos por correo o teléfono en menos de 24 horas para coordinar tu demo.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 text-left">
+              <div className="w-10 h-10 rounded-lg bg-[#F6BE17]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Zap className="w-5 h-5 text-[#262F3F]" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground text-sm">¿Necesitas ayuda urgente?</p>
+                <p className="text-sm text-muted-foreground">Escríbenos por WhatsApp y te atenderemos al instante.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 pt-4">
+            <Button
+              size="lg"
+              className="w-full bg-[#262F3F] hover:bg-[#262F3F]/90 text-white"
+              onClick={() => setShowSuccessModal(false)}
+            >
+              Entendido
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full border-[#25D366] text-[#25D366] hover:bg-[#25D366]/10"
+              asChild
+            >
+              <Link
+                href="https://api.whatsapp.com/send?phone=524432391799&text=Hola%20me%20interesa%20agendar%20una%20reuni%C3%B3n%20para%20charlar%20sobre%20su%20plataforma%20Payaya"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setShowSuccessModal(false)}
+              >
+                <MessageCircle className="w-4 h-4 mr-2" />
+                Ir a WhatsApp
+              </Link>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { Mail } from 'lucide-react';
+import { Mail, MessageCircle, Facebook } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import Logo from '@/components/logo';
 
@@ -19,7 +19,19 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { icon: Mail, href: 'mailto:contacto@payaya.mx', label: 'Email' }
+    { icon: Mail, href: 'mailto:adrian@payaya.cc', label: 'Email' },
+    {
+      icon: MessageCircle,
+      href: 'https://api.whatsapp.com/send?phone=524432391799&text=Hola%20me%20interesa%20agendar%20una%20reuni%C3%B3n%20para%20charlar%20sobre%20su%20plataforma%20Payaya',
+      label: 'WhatsApp',
+      color: 'hover:text-[#25D366] hover:border-[#25D366]'
+    },
+    {
+      icon: Facebook,
+      href: 'https://www.facebook.com/profile.php?id=61583637895869',
+      label: 'Facebook',
+      color: 'hover:text-[#1877F2] hover:border-[#1877F2]'
+    }
   ];
 
   return (
@@ -45,9 +57,11 @@ const Footer = () => {
                   <motion.a
                     key={index}
                     href={social.href}
+                    target={social.href.startsWith('http') ? '_blank' : undefined}
+                    rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    className="size-9 border border-border/60 text-muted-foreground rounded-md flex items-center justify-center hover:text-foreground transition-colors"
+                    className={`size-9 border border-border/60 text-muted-foreground rounded-md flex items-center justify-center transition-colors ${social.color || 'hover:text-foreground'}`}
                     aria-label={social.label}
                   >
                     <social.icon className="size-4" />

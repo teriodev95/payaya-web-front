@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
 import { ThemeProvider } from 'next-themes';
 import { TooltipProvider } from '@radix-ui/react-tooltip';
+import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -59,6 +60,38 @@ export default async function RootLayout({
 }) {
   return (
     <html className="h-full" suppressHydrationWarning>
+      <head>
+        {/* Microsoft Clarity */}
+        <Script
+          id="clarity-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "u39z7tk3pr");
+            `,
+          }}
+        />
+
+        {/* Umami Analytics */}
+        <Script
+          src="https://umami.clvrt.cc/script.js"
+          data-website-id="992b815a-0d1a-4a3e-9096-a897585d0e8f"
+          strategy="afterInteractive"
+          defer
+        />
+
+        {/* Plausible Analytics */}
+        <Script
+          src="https://plausible.clvrt.cc/js/script.js"
+          data-domain="payaya.cc"
+          strategy="afterInteractive"
+          defer
+        />
+      </head>
       <body
         className={cn(
           'antialiased text-base text-foreground bg-background',

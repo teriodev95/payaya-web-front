@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Gift } from 'lucide-react';
+import { ArrowRight, Play, X } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { Star } from '@/components/custom/star';
 import Image from 'next/image';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 
 const Hero = () => {
 
@@ -70,6 +72,19 @@ const Hero = () => {
 
   // Mouse parallax state
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile on mount
+  useState(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  });
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = (e.target as HTMLDivElement).getBoundingClientRect();
     setMouse({
@@ -240,15 +255,24 @@ const Hero = () => {
             transition={{ duration: 0.6 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10 px-4"
           >
-            <Button size="lg" className="cursor-pointer hover:[&_svg]:translate-x-1 w-full sm:w-auto">
-              Agendar demostración
-              <ArrowRight className="h-5 w-5 transition-transform" />
+            <Button
+              size="lg"
+              className="cursor-pointer hover:[&_svg]:translate-x-1 w-full sm:w-auto"
+              onClick={() => setShowVideoModal(true)}
+            >
+              <Play className="h-5 w-5 transition-transform mr-2" />
+              Ver demo de nuestro trabajo
             </Button>
 
-            <Button size="lg" variant="outline" className="cursor-pointer hover:[&_svg]:-translate-y-1 w-full sm:w-auto" asChild>
+            <Button
+              size="lg"
+              variant="outline"
+              className="cursor-pointer w-full sm:w-auto"
+              asChild
+            >
               <Link href="#pricing">
-                <Gift className="h-5 w-5 transition-transform opacity-60" />
-                Ver precios
+                <ArrowRight className="h-5 w-5 transition-transform opacity-60 mr-2" />
+                Ver precios y planes
               </Link>
             </Button>
           </motion.div>
@@ -291,6 +315,82 @@ const Hero = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Video Modal - Desktop */}
+      {!isMobile && (
+        <Dialog open={showVideoModal} onOpenChange={setShowVideoModal}>
+          <DialogContent className="sm:max-w-4xl p-0 overflow-hidden">
+            <div className="relative">
+              {/* Close button */}
+              <button
+                onClick={() => setShowVideoModal(false)}
+                className="absolute -top-10 right-0 z-50 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors"
+                aria-label="Cerrar"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              {/* Video Title and Description */}
+              <div className="bg-gradient-to-br from-[#F6BE17]/10 to-background p-6 border-b border-border">
+                <h3 className="text-2xl font-bold mb-2 text-foreground">
+                  Calidad profesional en cada curso
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Siempre buscamos crear el contenido de video con la tecnología más moderna y el equipo más profesional,
+                  de modo que el resultado final se vea de la más alta calidad y sea fácil de entender para tus usuarios.
+                </p>
+              </div>
+
+              {/* Video Player */}
+              <div className="relative aspect-video bg-black">
+                <video
+                  controls
+                  autoPlay
+                  className="w-full h-full"
+                  src="https://files.xpress1.cc/Demo%202%20RH%20Curso%20Xpress.mp4"
+                >
+                  Tu navegador no soporta el elemento de video.
+                </video>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* Video Drawer - Mobile */}
+      {isMobile && (
+        <Drawer open={showVideoModal} onOpenChange={setShowVideoModal}>
+          <DrawerContent className="max-h-[90vh]">
+            <DrawerTitle className="sr-only">Video demo de Payaya</DrawerTitle>
+
+            {/* Handle bar */}
+            <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted mb-4 mt-4" />
+
+            {/* Video Title and Description */}
+            <div className="px-6 pb-4">
+              <h3 className="text-xl font-bold mb-2 text-foreground">
+                Calidad profesional en cada curso
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Siempre buscamos crear el contenido de video con la tecnología más moderna y el equipo más profesional,
+                de modo que el resultado final se vea de la más alta calidad y sea fácil de entender para tus usuarios.
+              </p>
+            </div>
+
+            {/* Video Player */}
+            <div className="relative aspect-video bg-black mx-6 mb-6 rounded-lg overflow-hidden">
+              <video
+                controls
+                autoPlay
+                className="w-full h-full"
+                src="https://files.xpress1.cc/Demo%202%20RH%20Curso%20Xpress.mp4"
+              >
+                Tu navegador no soporta el elemento de video.
+              </video>
+            </div>
+          </DrawerContent>
+        </Drawer>
+      )}
     </section>
   );
 };
