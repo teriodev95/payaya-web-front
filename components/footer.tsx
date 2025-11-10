@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Mail, MessageCircle, Facebook } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import Logo from '@/components/logo';
+import Link from 'next/link';
 
 const Footer = () => {
   const links = {
@@ -105,13 +106,18 @@ const Footer = () => {
         
         <Separator className="my-6 bg-border/50" />
 
-        <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
             © 2025 Payaya. Todos los derechos reservados.
           </p>
-          <p className="text-muted-foreground text-sm mt-4 md:mt-0">
-            Hecho en México con 💛
-          </p>
+          <div className="flex items-center gap-4">
+            <Link href="/privacidad" className="text-muted-foreground text-sm hover:text-[#F6BE17] transition-colors">
+              Política de Privacidad
+            </Link>
+            <p className="text-muted-foreground text-sm">
+              Hecho en México con 💛
+            </p>
+          </div>
         </div>
       </div>
     </footer>
