@@ -1,5 +1,4 @@
-
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,7 +8,14 @@ import { useState } from 'react';
 import { CustomTitle } from './custom/title';
 import { CustomSubtitle } from './custom/subtitle';
 import { CustomBadge } from './custom/badge';
-import { cn, scrollToSection } from '@/lib/utils';
+import { cn, formatCurrency, scrollToSection } from '@/lib/utils';
+
+const SAVING = 0.19;
+
+const calcYearlySaving = (value: string | number) => {
+  const price = Number(value);
+  return price * SAVING * 12;
+};
 
 const Pricing = () => {
   const [billingPeriod, setBillingPeriod] = useState('monthly');
@@ -18,13 +24,15 @@ const Pricing = () => {
   const plans = [
     {
       name: 'Core',
-      monthlyPrice: '$98',
-      yearlyPrice: '$1,176',
+      monthlyPrice: '98',
       period: isYearly ? '/año por usuario' : '/mes por usuario',
       description: 'PYMES que inician su capacitación digital',
-      subDescription: isYearly ? 'Compra mínima: 450 usuarios · Ahorra $132/usuario al año' : null,
+      subDescription: function () {
+        if (!isYearly) return 'Compra mínima: 50 usuarios';
+
+        return `Compra mínima: 50 usuarios · Ahorra ${formatCurrency(calcYearlySaving(this.monthlyPrice))} / año por usuario`;
+      },
       features: [
-        '450 usuarios incluidos',
         'PWA móvil optimizada',
         'Exámenes automáticos 15-20 preguntas',
         'Certificados digitales',
@@ -37,13 +45,15 @@ const Pricing = () => {
     },
     {
       name: 'Plus',
-      monthlyPrice: '$89',
-      yearlyPrice: '$1,068',
+      monthlyPrice: '89',
       period: isYearly ? '/año por usuario' : '/mes por usuario',
       description: 'Empresas medianas con equipos múltiples',
-      subDescription: isYearly ? 'Compra mínima: 1,200 usuarios · Ahorra $108/usuario al año' : null,
+      subDescription: function () {
+        if (!isYearly) return 'Compra mínima: 200 usuarios';
+
+        return `Compra mínima: 200 usuarios · Ahorra ${formatCurrency(calcYearlySaving(this.monthlyPrice))} / año por usuario`;
+      },
       features: [
-        '1,200 usuarios incluidos',
         'Todo lo de Core',
         'Prioridad en soporte',
         'Integraciones vía API',
@@ -56,13 +66,15 @@ const Pricing = () => {
     },
     {
       name: 'Max',
-      monthlyPrice: '$79',
-      yearlyPrice: '$948',
+      monthlyPrice: '79',
       period: isYearly ? '/año por usuario' : '/mes por usuario',
       description: 'Corporativos con estructura regional',
-      subDescription: isYearly ? 'Compra mínima: 3,000 usuarios · Ahorra $228/usuario al año' : null,
+      subDescription: function () {
+        if (!isYearly) return 'Compra mínima: 500 usuarios';
+
+        return `Compra mínima: 500 usuarios · Ahorra ${formatCurrency(calcYearlySaving(this.monthlyPrice))} / año por usuario`;
+      },
       features: [
-        '3,000 usuarios incluidos',
         'Todo lo de Plus',
         'Soporte dedicado 24/7',
         'Onboarding personalizado',
@@ -70,6 +82,20 @@ const Pricing = () => {
         'Alta disponibilidad garantizada',
         'Auditoría completa',
         'Consultoría estratégica'
+      ],
+      popular: false
+    },
+    {
+      name: 'Empresarial',
+      customPrice: 'Contáctanos',
+      description: 'Empresas con necesidades únicas',
+      subDescription: function () {
+        return '1000+ usuarios';
+      },
+      features: [
+        'Todo lo de Max',
+        'Personaliza tu experiencia',
+        'Escoge las funcionalidades que necesites',
       ],
       popular: false
     }
@@ -93,9 +119,9 @@ const Pricing = () => {
           </CustomTitle>
 
           <CustomSubtitle className="mb-10">
-            Invierte una vez al año y olvídate de pagos mensuales. Pago por usuario activo con mínimos por plan.
+            Invierte una vez al año con nuestro plan Anual, ahorra hasta 19% y olvídate de pagos mensuales.
             <br />
-            Todas las opciones incluyen infraestructura, respaldos y soporte. Ahorra hasta 19% con pago anual.
+            <small>(Todas las opciones incluyen infraestructura, respaldos y soporte)</small>
           </CustomSubtitle>
 
           {/* Pricing Period Toggle */}
@@ -114,18 +140,18 @@ const Pricing = () => {
               </ToggleGroupItem>
               <ToggleGroupItem
                 value="yearly"
-                className="cursor-pointer flex items-center rounded-lg text-sm font-medium px-6 py-2 data-[state=on]:bg-background data-[state=on]:shadow-sm flex items-center gap-2"
+                className="cursor-pointer rounded-lg text-sm font-medium px-6 py-2 data-[state=on]:bg-background data-[state=on]:shadow-sm flex items-center gap-2"
               >
                 Anual
                 <Badge variant="outline" className="leading-0 rounded-sm px-1 py-0.5 text-[11px] bg-[#F6BE17]/20 border-[#F6BE17]/30 text-[#262F3F] dark:text-[#F6BE17] dark:bg-[#F6BE17]/20 dark:border-[#F6BE17]/30 font-semibold">
-                  Ahorra
+                  Ahorra 19%
                 </Badge>
               </ToggleGroupItem>
             </ToggleGroup>
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
@@ -155,7 +181,7 @@ const Pricing = () => {
                   </CardDescription>
                   {plan.subDescription && (
                     <CardDescription className="text-xs text-[#F6BE17] font-medium mb-3">
-                      {plan.subDescription}
+                      {plan.subDescription()}
                     </CardDescription>
                   )}
                   <div className="flex items-end justify-center">
@@ -170,9 +196,17 @@ const Pricing = () => {
                             duration: 0.2,
                             ease: "easeInOut"
                           }}
-                          className="text-5xl font-bold bg-gradient-to-r from-[#F6BE17] to-[#d9a614] bg-clip-text text-transparent relative"
+                          className="text-3xl font-bold bg-gradient-to-r from-[#F6BE17] to-[#d9a614] bg-clip-text text-transparent relative"
                         >
-                          {isYearly ? plan.yearlyPrice : plan.monthlyPrice}
+                          {
+                            plan.customPrice !== undefined ?
+                              plan.customPrice :
+                              (
+                                isYearly ?
+                                  formatCurrency(Number(plan.monthlyPrice) * 12 - calcYearlySaving(plan.monthlyPrice)) :
+                                  formatCurrency(plan.monthlyPrice)
+                              )
+                          }
                         </motion.span>
                       </AnimatePresence>
                     </div>
