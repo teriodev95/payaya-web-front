@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { Button } from '@/components/ui/button';
 import { Boxes } from '@/components/ui/background-boxes';
-import Link from 'next/link';
+import { scrollToSection } from '@/lib/utils';
 
 const CallToAction = () => {
   const handleConfetti = () => {
@@ -52,8 +52,14 @@ const CallToAction = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            <Button variant="outline" size="lg" className="font-semibold" onMouseEnter={handleConfetti}>
-              <Link href="#contact">Solicitar demo gratuita</Link>
+            <Button
+              variant="outline"
+              size="lg"
+              className="font-semibold"
+              onMouseEnter={handleConfetti}
+              onClick={() => scrollToSection('contact')}
+            >
+              Solicitar demo gratuita
             </Button>
           </motion.div>
         </motion.div>

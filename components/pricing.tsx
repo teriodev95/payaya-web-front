@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { CustomTitle } from './custom/title';
 import { CustomSubtitle } from './custom/subtitle';
 import { CustomBadge } from './custom/badge';
-import { cn } from '@/lib/utils';
+import { cn, scrollToSection } from '@/lib/utils';
 
 const Pricing = () => {
   const [billingPeriod, setBillingPeriod] = useState('monthly');
@@ -195,7 +195,12 @@ const Pricing = () => {
                     whileTap={{ scale: 0.98 }}
                     className="pt-6"
                   >
-                    <Button className="w-full cursor-pointer" size="lg" variant={plan.popular ? "default" : "outline"}>
+                    <Button
+                      className="w-full cursor-pointer"
+                      size="lg"
+                      variant={plan.popular ? "default" : "outline"}
+                      onClick={() => scrollToSection('contact')}
+                    >
                       Hablar con ventas
                     </Button>
                   </motion.div>

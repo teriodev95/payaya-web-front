@@ -4,8 +4,7 @@ import { CustomBadge } from '@/components/custom/badge';
 import { CustomTitle } from '@/components/custom/title';
 import { CustomSubtitle } from '@/components/custom/subtitle';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { cn, scrollToSection } from '@/lib/utils';
 import { Cable, ChartNoAxesCombined, Cog, CloudUpload } from 'lucide-react';
 
 const HowItWorks = () => {
@@ -193,8 +192,11 @@ const HowItWorks = () => {
           <p className="text-muted-foreground mb-4">
             ¿Listo para empezar? Toma menos de 5 minutos.
           </p>
-          <Button size="lg" asChild>
-            <Link href="#cta">Solicitar demo</Link>
+          <Button
+            size="lg"
+            onClick={() => scrollToSection('contact')}
+          >
+            Solicitar demo
           </Button>
         </div>
       </div>
