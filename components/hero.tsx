@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Play, X } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { Star } from '@/components/custom/star';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 
 const Hero = () => {
@@ -347,27 +347,19 @@ const Hero = () => {
       {!isMobile && (
         <Dialog open={showVideoModal} onOpenChange={setShowVideoModal}>
           <DialogContent className="sm:max-w-4xl p-0 overflow-hidden">
+            <DialogHeader className="bg-gradient-to-br from-[#F6BE17]/10 to-background p-6 border-b border-border">
+              <DialogTitle className="text-2xl font-bold mb-2 text-foreground">
+                Calidad profesional en cada curso
+              </DialogTitle>
+              <DialogDescription className="text-muted-foreground leading-relaxed">
+                Siempre buscamos crear el contenido de video con la tecnología más moderna y el equipo más profesional,
+                de modo que el resultado final se vea de la más alta calidad y sea fácil de entender para tus usuarios.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogTitle>
+
+            </DialogTitle>
             <div className="relative">
-              {/* Close button */}
-              <button
-                onClick={() => setShowVideoModal(false)}
-                className="absolute -top-10 right-0 z-50 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center hover:bg-background transition-colors"
-                aria-label="Cerrar"
-              >
-                <X className="w-4 h-4" />
-              </button>
-
-              {/* Video Title and Description */}
-              <div className="bg-gradient-to-br from-[#F6BE17]/10 to-background p-6 border-b border-border">
-                <h3 className="text-2xl font-bold mb-2 text-foreground">
-                  Calidad profesional en cada curso
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Siempre buscamos crear el contenido de video con la tecnología más moderna y el equipo más profesional,
-                  de modo que el resultado final se vea de la más alta calidad y sea fácil de entender para tus usuarios.
-                </p>
-              </div>
-
               {/* Video Player */}
               <div className="relative aspect-video bg-black">
                 <video
