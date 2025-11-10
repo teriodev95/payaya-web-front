@@ -78,7 +78,7 @@ const Header = () => {
         const targetId = sectionMap[item] || item.toLowerCase().replace(' ', '-');
         const element = document.getElementById(targetId);
         if (element) {
-          const headerOffset = 80; // Height of fixed header
+          const headerOffset = 0; // Height of fixed header
           const elementPosition = element.getBoundingClientRect().top;
           const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
