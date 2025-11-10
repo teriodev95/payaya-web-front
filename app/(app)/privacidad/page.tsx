@@ -34,10 +34,10 @@ export default function PrivacyPolicyPage() {
             <section>
               <h2 className="text-base font-semibold mb-3 text-foreground">1. Identificación y Domicilio del Responsable</h2>
               <p className="text-muted-foreground mb-2">
-                Payaya, en adelante "el Responsable", con domicilio en Ciudad de México, México, es responsable del uso y protección de sus datos personales.
+                Payaya, en adelante &ldquo;el Responsable&rdquo;, con domicilio en Ciudad de México, México, es responsable del uso y protección de sus datos personales.
               </p>
               <p className="text-muted-foreground">
-                El presente Aviso de Privacidad se emite en cumplimiento a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (en adelante "la Ley"), publicada en el Diario Oficial de la Federación el 5 de julio de 2010, su Reglamento publicado el 21 de diciembre de 2011, y los Lineamientos del Aviso de Privacidad publicados el 17 de enero de 2013, así como demás normatividad aplicable en la materia.
+                El presente Aviso de Privacidad se emite en cumplimiento a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (en adelante &ldquo;la Ley&rdquo;), publicada en el Diario Oficial de la Federación el 5 de julio de 2010, su Reglamento publicado el 21 de diciembre de 2011, y los Lineamientos del Aviso de Privacidad publicados el 17 de enero de 2013, así como demás normatividad aplicable en la materia.
               </p>
             </section>
 
