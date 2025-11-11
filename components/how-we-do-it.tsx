@@ -5,7 +5,7 @@ import { CustomTitle } from '@/components/custom/title';
 import { CustomSubtitle } from '@/components/custom/subtitle';
 import { Button } from '@/components/ui/button';
 import { Video, Brain, Wrench, Rocket, ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, scrollToSection } from '@/lib/utils';
 import Link from 'next/link';
 
 const HowWeDoIt = () => {
@@ -157,7 +157,11 @@ const HowWeDoIt = () => {
           className="flex flex-col items-center gap-6"
         >
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button size="lg" className="cursor-pointer hover:[&_svg]:translate-x-1 w-full sm:w-auto">
+            <Button
+              size="lg"
+              className="cursor-pointer hover:[&_svg]:translate-x-1 w-full sm:w-auto"
+              onClick={() => scrollToSection('contact')}
+            >
               Agendar demostración
               <ArrowRight className="h-5 w-5 transition-transform" />
             </Button>

@@ -367,7 +367,7 @@ const Contact = () => {
 
                     {/* Microcopy */}
                     <p className="text-sm text-center text-muted-foreground leading-relaxed pt-2">
-                      Nuestro equipo te contactará por correo para agendar una breve llamada o demo según tus horarios.
+                      Nuestro equipo te contactará para agendar una breve llamada o demo según tus horarios.
                     </p>
                   </form>
                 </Form>

@@ -14,7 +14,6 @@ const Header = () => {
     'Precios',
     'Calculadora',
     'FAQ',
-    'Contacto'
   ];
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -53,6 +52,16 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [activeSection]);
 
+  const sectionMap: { [key: string]: string } = {
+    'Inicio': 'home',
+    'Cómo lo hacemos': 'how-we-do-it',
+    'Beneficios': 'features',
+    'Precios': 'pricing',
+    'Calculadora': 'budget-calculator',
+    'FAQ': 'faq',
+    'Contacto': 'contact'
+  };
+
   const handleNavClick = (item: string) => {
     // Close drawer first
     setIsOpen(false);
@@ -66,18 +75,10 @@ const Header = () => {
           behavior: 'smooth'
         });
       } else {
-        const sectionMap: { [key: string]: string } = {
-          'Cómo lo hacemos': 'how-we-do-it',
-          'Beneficios': 'features',
-          'Precios': 'pricing',
-          'Calculadora': 'budget-calculator',
-          'FAQ': 'faq',
-          'Contacto': 'contact'
-        };
         const targetId = sectionMap[item] || item.toLowerCase().replace(' ', '-');
         const element = document.getElementById(targetId);
         if (element) {
-          const headerOffset = 80; // Height of fixed header
+          const headerOffset = 0; // Height of fixed header
           const elementPosition = element.getBoundingClientRect().top;
           const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -91,15 +92,6 @@ const Header = () => {
   };
 
   const isActiveItem = (item: string) => {
-    const sectionMap: { [key: string]: string } = {
-      'Inicio': 'home',
-      'Cómo lo hacemos': 'how-we-do-it',
-      'Beneficios': 'features',
-      'Precios': 'pricing',
-      'Calculadora': 'budget-calculator',
-      'FAQ': 'faq',
-      'Contacto': 'contact'
-    };
     return activeSection === sectionMap[item];
   };
 
@@ -142,7 +134,7 @@ const Header = () => {
               </motion.button>
             ))}
             
-            <Button variant="default">
+            <Button variant="default" onClick={() => handleNavClick('Contacto')}>
               Solicitar demo
             </Button>
           </nav>
@@ -180,7 +172,7 @@ const Header = () => {
                     <Button
                       className="w-full bg-[#262F3F] hover:bg-[#262F3F]/90 text-white"
                       size="lg"
-                      onClick={() => setIsOpen(false)}
+                      onClick={() => handleNavClick('Contacto')}
                     >
                       Solicitar demo
                     </Button>

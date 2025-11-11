@@ -4,8 +4,7 @@ import { CustomBadge } from '@/components/custom/badge';
 import { CustomTitle } from '@/components/custom/title';
 import { CustomSubtitle } from '@/components/custom/subtitle';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { cn, scrollToSection } from '@/lib/utils';
 import { Cable, ChartNoAxesCombined, Cog, CloudUpload } from 'lucide-react';
 
 const HowItWorks = () => {
@@ -13,6 +12,7 @@ const HowItWorks = () => {
   const [progress, setProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const manuallyTriggered = useRef(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const steps = [
     {
@@ -45,21 +45,46 @@ const HowItWorks = () => {
     },
   ];
 
-  const stepDuration = 5000; // 8 secon
-  
+  const stepDuration = 1000; // 3 seconds
+
+  // Intersection Observer to pause animation when section is out of viewport
+  useEffect(() => {
+    const currentSection = sectionRef.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Pause if section is not in viewport
+        setIsPaused(!entry.isIntersecting);
+      },
+      {
+        // Trigger when at least 50% of the section is visible
+        threshold: 0.5,
+      }
+    );
+
+    if (currentSection) {
+      observer.observe(currentSection);
+    }
+
+    return () => {
+      if (currentSection) {
+        observer.unobserve(currentSection);
+      }
+    };
+  }, []);
+
   // Auto-advance steps with progress animation
   useEffect(() => {
     if (isPaused) return;
-  
+
     setProgress(0);
-  
+
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) return 100;
         return prev + (100 / (stepDuration / 50));
       });
     }, 50);
-  
+
     const stepTimeout = setTimeout(() => {
       setActiveStep((prevStep) => {
         const next = (prevStep + 1) % steps.length;
@@ -67,7 +92,7 @@ const HowItWorks = () => {
         return next;
       });
     }, stepDuration);
-  
+
     return () => {
       clearInterval(progressInterval);
       clearTimeout(stepTimeout);
@@ -81,7 +106,7 @@ const HowItWorks = () => {
   };
 
   return (
-    <section id="how-it-works" className="py-24 border-b border-border/50">
+    <section ref={sectionRef} id="how-it-works" className="py-24 border-b border-border/50">
       <div className="container mx-auto px-6">
         {/* Header */}
         <motion.div 
@@ -108,7 +133,7 @@ const HowItWorks = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="flex flex-col gap-12 max-w-6xl mx-auto">
+          className="flex flex-col gap-12 max-w-6xl mx-auto min-h-64">
           {/* Step Navigation - Grid mejorado */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-4">
             {steps.map((step, index) => (
@@ -193,8 +218,11 @@ const HowItWorks = () => {
           <p className="text-muted-foreground mb-4">
             ¿Listo para empezar? Toma menos de 5 minutos.
           </p>
-          <Button size="lg" asChild>
-            <Link href="#cta">Solicitar demo</Link>
+          <Button
+            size="lg"
+            onClick={() => scrollToSection('contact')}
+          >
+            Solicitar demo
           </Button>
         </div>
       </div>

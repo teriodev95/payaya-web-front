@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Play, CheckCircle2 } from 'lucide-react';
+import { formatCurrency } from "@/lib/utils";
 
 const BudgetCalculator = () => {
   const [sections, setSections] = useState(5);
@@ -23,15 +24,6 @@ const BudgetCalculator = () => {
   const totalMinutes = sections * videosPerSection * minutesPerVideo;
   const productionCost = totalMinutes * COST_PER_MINUTE;
   const totalCost = productionCost + EXAM_CERT_COST;
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-MX', {
-      style: 'currency',
-      currency: 'MXN',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
 
   return (
     <section className="py-24 bg-muted/30 border-b border-border/50" id="budget-calculator">

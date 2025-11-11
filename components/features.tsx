@@ -8,6 +8,7 @@ import { CustomSubtitle } from '@/components/custom/subtitle';
 import { Button } from '@/components/ui/button';
 import { Zap, Shield, BarChart3, Users, Brain, Award, RefreshCw, Palette, ArrowRight, X } from 'lucide-react';
 import Link from 'next/link';
+import { scrollToSection } from '@/lib/utils';
 
 const Features = () => {
   const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
@@ -214,7 +215,14 @@ const Features = () => {
 
                       {/* CTA */}
                       <div className="pt-4">
-                        <Button className="w-full bg-[#262F3F] hover:bg-[#262F3F]/90 text-white" size="lg">
+                        <Button
+                          className="w-full bg-[#262F3F] hover:bg-[#262F3F]/90 text-white"
+                          size="lg"
+                          onClick={() => {
+                            setSelectedFeature(null);
+                            setTimeout(() => scrollToSection('contact'), 300);
+                          }}
+                        >
                           Agendar demostración
                           <ArrowRight className="w-5 h-5 ml-2" />
                         </Button>
@@ -240,7 +248,11 @@ const Features = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button size="lg" className="cursor-pointer hover:[&_svg]:translate-x-1 w-full sm:w-auto">
+            <Button
+              size="lg"
+              className="cursor-pointer hover:[&_svg]:translate-x-1 w-full sm:w-auto"
+              onClick={() => scrollToSection('contact')}
+            >
               Agendar demostración
               <ArrowRight className="h-5 w-5 transition-transform" />
             </Button>
