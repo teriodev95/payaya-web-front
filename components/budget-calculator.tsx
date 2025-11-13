@@ -11,18 +11,41 @@ import { Slider } from '@/components/ui/slider';
 import { Play, CheckCircle2 } from 'lucide-react';
 import { formatCurrency } from "@/lib/utils";
 
+// Video types with cost per second
+const VIDEO_TYPES = {
+  voiceover: {
+    name: 'Voz en off y grabación de pantalla',
+    costPerSecond: 478 / 60, // $7.967 per second
+    description: 'Narración profesional con captura de pantalla'
+  },
+  professional: {
+    name: 'Grabación con equipo profesional',
+    costPerSecond: 985 / 60, // $16.417 per second
+    description: 'Producción con cámara y equipo de estudio'
+  },
+  ai: {
+    name: 'Video con IA',
+    costPerSecond: 917 / 60, // $15.283 per second
+    description: 'Generado con inteligencia artificial'
+  }
+} as const;
+
+type VideoType = keyof typeof VIDEO_TYPES;
+
 const BudgetCalculator = () => {
   const [sections, setSections] = useState(5);
   const [videosPerSection, setVideosPerSection] = useState(4);
   const [minutesPerVideo, setMinutesPerVideo] = useState(4);
+  const [videoType, setVideoType] = useState<VideoType>('voiceover');
 
-  const COST_PER_MINUTE = 478;
   const EXAM_CERT_COST = 4690;
 
   // Calculations
   const totalVideos = sections * videosPerSection;
   const totalMinutes = sections * videosPerSection * minutesPerVideo;
-  const productionCost = totalMinutes * COST_PER_MINUTE;
+  const totalSeconds = totalMinutes * 60;
+  const costPerSecond = VIDEO_TYPES[videoType].costPerSecond;
+  const productionCost = totalSeconds * costPerSecond;
   const totalCost = productionCost + EXAM_CERT_COST;
 
   return (
@@ -141,6 +164,42 @@ const BudgetCalculator = () => {
                     </div>
                   </div>
 
+                  {/* Video Type Selector */}
+                  <div className="space-y-4 pt-4 border-t">
+                    <Label className="text-base font-medium">
+                      Tipo de video
+                    </Label>
+                    <div className="space-y-2">
+                      {(Object.keys(VIDEO_TYPES) as VideoType[]).map((type) => (
+                        <button
+                          key={type}
+                          onClick={() => setVideoType(type)}
+                          className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                            videoType === type
+                              ? 'border-[#F6BE17] bg-[#F6BE17]/5'
+                              : 'border-border hover:border-[#F6BE17]/30'
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex-1">
+                              <div className="font-semibold text-foreground mb-1">
+                                {VIDEO_TYPES[type].name}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {VIDEO_TYPES[type].description}
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <div className="text-sm font-bold text-muted-foreground">
+                                {formatCurrency(VIDEO_TYPES[type].costPerSecond)} / segundo
+                              </div>
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   {/* Quick Stats */}
                   <div className="grid grid-cols-2 gap-4 pt-4 border-t">
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
@@ -183,8 +242,11 @@ const BudgetCalculator = () => {
                     <div className="flex justify-between items-start p-4 bg-background/50 rounded-lg">
                       <div className="flex-1">
                         <p className="font-semibold text-foreground mb-1">Producción de videos</p>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          {VIDEO_TYPES[videoType].name}
+                        </p>
                         <p className="text-sm text-muted-foreground">
-                          {totalMinutes} min × {formatCurrency(COST_PER_MINUTE)}/min grabado
+                          {totalSeconds.toLocaleString()} seg × {formatCurrency(costPerSecond)}/seg
                         </p>
                       </div>
                       <div className="text-right">
