@@ -8,15 +8,44 @@ import { CustomSubtitle } from '@/components/custom/subtitle';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Play, CheckCircle2 } from 'lucide-react';
-import { formatCurrency } from "@/lib/utils";
+import { Play, CheckCircle2, Video, Monitor, Bot } from 'lucide-react';
+import { formatCurrency, cn } from "@/lib/utils";
+
+const productionTypes = [
+  {
+    id: 'professional',
+    name: 'Grabación profesional',
+    description: 'Equipo de audio y video en estudio o locación',
+    example: 'Liderazgo, onboarding, cumplimiento normativo, procesos operativos en campo',
+    pricePerMinute: 987,
+    icon: Video,
+  },
+  {
+    id: 'screencast',
+    name: 'Grabación de pantalla',
+    description: 'Captura de pantalla con voz en off profesional',
+    example: 'Tutoriales de software, procesos en sistemas, demos de producto',
+    pricePerMinute: 468,
+    icon: Monitor,
+  },
+  {
+    id: 'avatar',
+    name: 'Avatar con IA',
+    description: 'Presentador virtual generado con inteligencia artificial',
+    example: 'Actualizaciones frecuentes, contenido multiidioma, escalabilidad rápida',
+    pricePerMinute: 1248,
+    icon: Bot,
+  },
+];
 
 const BudgetCalculator = () => {
   const [sections, setSections] = useState(5);
   const [videosPerSection, setVideosPerSection] = useState(4);
   const [minutesPerVideo, setMinutesPerVideo] = useState(4);
+  const [productionType, setProductionType] = useState('professional');
 
-  const COST_PER_MINUTE = 478;
+  const selectedType = productionTypes.find(t => t.id === productionType);
+  const COST_PER_MINUTE = selectedType?.pricePerMinute || 987;
   const EXAM_CERT_COST = 4690;
 
   // Calculations
@@ -43,6 +72,57 @@ const BudgetCalculator = () => {
           <CustomSubtitle>
             Pago único por producción y directo en Payaya, para que tus usuarios solo tengan que presionar &quot;play&quot;.
           </CustomSubtitle>
+        </motion.div>
+
+        {/* Production Type Selector */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="max-w-5xl mx-auto mb-8"
+        >
+          <h3 className="text-lg font-semibold text-foreground mb-4 text-center">Selecciona el tipo de producción</h3>
+          <div className="grid md:grid-cols-3 gap-4">
+            {productionTypes.map((type) => {
+              const Icon = type.icon;
+              const isSelected = productionType === type.id;
+              return (
+                <button
+                  key={type.id}
+                  onClick={() => setProductionType(type.id)}
+                  className={cn(
+                    'p-4 rounded-xl border-2 text-left transition-all duration-200 cursor-pointer',
+                    isSelected
+                      ? 'border-[#F6BE17] bg-[#F6BE17]/10 shadow-lg'
+                      : 'border-border bg-background hover:border-[#F6BE17]/50 hover:bg-muted/50'
+                  )}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className={cn(
+                      'w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0',
+                      isSelected ? 'bg-[#F6BE17] text-[#262F3F]' : 'bg-muted text-muted-foreground'
+                    )}>
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <h4 className="font-semibold text-foreground text-sm">{type.name}</h4>
+                        <span className={cn(
+                          'text-sm font-bold whitespace-nowrap',
+                          isSelected ? 'text-[#F6BE17]' : 'text-muted-foreground'
+                        )}>
+                          {formatCurrency(type.pricePerMinute)}/min
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-2">{type.description}</p>
+                      <p className="text-xs text-muted-foreground/80 italic">Ej: {type.example}</p>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </motion.div>
 
         {/* Calculator */}
@@ -162,11 +242,26 @@ const BudgetCalculator = () => {
                 <div className="mb-6">
                   <h3 className="text-xl font-bold text-foreground mb-2">Inversión única de producción</h3>
                   <p className="text-sm text-muted-foreground">
-                    Paga una sola vez por la grabación profesional de tu curso personalizado.
+                    Paga una sola vez por la producción de tu curso personalizado.
                   </p>
                 </div>
 
                 <div className="space-y-6 flex-grow">
+                  {/* Selected Production Type */}
+                  <div className="flex items-center justify-between p-4 bg-[#F6BE17]/10 rounded-lg border border-[#F6BE17]/30">
+                    <div className="flex items-center gap-3">
+                      {selectedType && (
+                        <div className="w-10 h-10 rounded-full bg-[#F6BE17] flex items-center justify-center">
+                          <selectedType.icon className="w-5 h-5 text-[#262F3F]" />
+                        </div>
+                      )}
+                      <div>
+                        <span className="font-semibold text-foreground">{selectedType?.name}</span>
+                        <p className="text-xs text-muted-foreground">{formatCurrency(COST_PER_MINUTE)} por minuto</p>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Total Minutes */}
                   <div className="flex items-center justify-between p-4 bg-background/50 rounded-lg">
                     <div className="flex items-center gap-3">
@@ -184,7 +279,7 @@ const BudgetCalculator = () => {
                       <div className="flex-1">
                         <p className="font-semibold text-foreground mb-1">Producción de videos</p>
                         <p className="text-sm text-muted-foreground">
-                          {totalMinutes} min × {formatCurrency(COST_PER_MINUTE)}/min grabado
+                          {totalMinutes} min × {formatCurrency(COST_PER_MINUTE)}/min
                         </p>
                       </div>
                       <div className="text-right">
@@ -208,7 +303,7 @@ const BudgetCalculator = () => {
                 <div className="mt-6 p-6 bg-[#262F3F] rounded-xl text-white">
                   <div className="flex items-center justify-between mb-2">
                     <div>
-                      <p className="text-sm opacity-80 mb-1">💰 Inversión total</p>
+                      <p className="text-sm opacity-80 mb-1">Inversión total</p>
                       <p className="text-4xl font-black">{formatCurrency(totalCost)}</p>
                     </div>
                   </div>
