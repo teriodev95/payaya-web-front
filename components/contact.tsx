@@ -132,13 +132,13 @@ const Contact = () => {
                 <div className="mb-6">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#F6BE17]/20 rounded-full mb-4">
                     <div className="w-2 h-2 bg-[#F6BE17] rounded-full animate-pulse" />
-                    <span className="text-xs font-medium text-[#F6BE17]">Disponibles para ti</span>
+                    <span className="text-xs font-medium text-[#F6BE17]">Respuesta en menos de 24h</span>
                   </div>
                   <h3 className="text-xl font-bold mb-2">
-                    Hablemos de tu proyecto
+                    Contacto directo
                   </h3>
                   <p className="text-sm text-white/70 leading-relaxed">
-                    Nuestro equipo te ayudará a crear la academia interna que tu organización necesita.
+                    Escríbenos para agendar una demo o resolver tus dudas sobre la plataforma.
                   </p>
                 </div>
 
