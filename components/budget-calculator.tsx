@@ -8,51 +8,71 @@ import { CustomSubtitle } from '@/components/custom/subtitle';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Play, CheckCircle2, Video, Monitor, Bot } from 'lucide-react';
+import { CheckCircle2, Video, Monitor, Bot } from 'lucide-react';
 import { formatCurrency, cn } from "@/lib/utils";
 
 const productionTypes = [
   {
     id: 'professional',
     name: 'Grabación profesional',
-    description: 'Equipo de audio y video en estudio o locación',
-    example: 'Liderazgo, onboarding, cumplimiento normativo, procesos operativos en campo',
+    description: 'Audio y video en estudio o locación',
+    example: 'Liderazgo, onboarding, procesos en campo',
     pricePerMinute: 987,
     icon: Video,
   },
   {
     id: 'screencast',
     name: 'Grabación de pantalla',
-    description: 'Captura de pantalla con voz en off profesional',
-    example: 'Tutoriales de software, procesos en sistemas, demos de producto',
+    description: 'Captura de pantalla con voz en off',
+    example: 'Tutoriales de software, demos',
     pricePerMinute: 468,
     icon: Monitor,
   },
   {
     id: 'avatar',
     name: 'Avatar con IA',
-    description: 'Presentador virtual generado con inteligencia artificial',
-    example: 'Actualizaciones frecuentes, contenido multiidioma, escalabilidad rápida',
+    description: 'Presentador virtual con IA',
+    example: 'Contenido multiidioma, actualizaciones',
     pricePerMinute: 1248,
     icon: Bot,
   },
 ];
 
 const BudgetCalculator = () => {
-  const [sections, setSections] = useState(5);
-  const [videosPerSection, setVideosPerSection] = useState(4);
-  const [minutesPerVideo, setMinutesPerVideo] = useState(4);
-  const [productionType, setProductionType] = useState('professional');
+  const [professionalMinutes, setProfessionalMinutes] = useState(60);
+  const [screencastMinutes, setScreencastMinutes] = useState(20);
+  const [avatarMinutes, setAvatarMinutes] = useState(0);
 
-  const selectedType = productionTypes.find(t => t.id === productionType);
-  const COST_PER_MINUTE = selectedType?.pricePerMinute || 987;
   const EXAM_CERT_COST = 4690;
 
   // Calculations
-  const totalVideos = sections * videosPerSection;
-  const totalMinutes = sections * videosPerSection * minutesPerVideo;
-  const productionCost = totalMinutes * COST_PER_MINUTE;
+  const totalMinutes = professionalMinutes + screencastMinutes + avatarMinutes;
+  const professionalCost = professionalMinutes * productionTypes[0].pricePerMinute;
+  const screencastCost = screencastMinutes * productionTypes[1].pricePerMinute;
+  const avatarCost = avatarMinutes * productionTypes[2].pricePerMinute;
+  const productionCost = professionalCost + screencastCost + avatarCost;
   const totalCost = productionCost + EXAM_CERT_COST;
+
+  const minutesConfig = [
+    {
+      type: productionTypes[0],
+      value: professionalMinutes,
+      setValue: setProfessionalMinutes,
+      cost: professionalCost,
+    },
+    {
+      type: productionTypes[1],
+      value: screencastMinutes,
+      setValue: setScreencastMinutes,
+      cost: screencastCost,
+    },
+    {
+      type: productionTypes[2],
+      value: avatarMinutes,
+      setValue: setAvatarMinutes,
+      cost: avatarCost,
+    },
+  ];
 
   return (
     <section className="py-24 bg-muted/30 border-b border-border/50" id="budget-calculator">
@@ -70,59 +90,10 @@ const BudgetCalculator = () => {
           <CustomTitle>Calcula el costo de tu contenido</CustomTitle>
 
           <CustomSubtitle>
-            Pago único por producción y directo en Payaya, para que tus usuarios solo tengan que presionar &quot;play&quot;.
+            Combina diferentes tipos de producción según las necesidades de tu curso.
+            <br />
+            <span className="text-muted-foreground/70">Pago único por producción, tu curso queda disponible permanentemente en Payaya.</span>
           </CustomSubtitle>
-        </motion.div>
-
-        {/* Production Type Selector */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="max-w-5xl mx-auto mb-8"
-        >
-          <h3 className="text-lg font-semibold text-foreground mb-4 text-center">Selecciona el tipo de producción</h3>
-          <div className="grid md:grid-cols-3 gap-4">
-            {productionTypes.map((type) => {
-              const Icon = type.icon;
-              const isSelected = productionType === type.id;
-              return (
-                <button
-                  key={type.id}
-                  onClick={() => setProductionType(type.id)}
-                  className={cn(
-                    'p-4 rounded-xl border-2 text-left transition-all duration-200 cursor-pointer',
-                    isSelected
-                      ? 'border-[#F6BE17] bg-[#F6BE17]/10 shadow-lg'
-                      : 'border-border bg-background hover:border-[#F6BE17]/50 hover:bg-muted/50'
-                  )}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className={cn(
-                      'w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0',
-                      isSelected ? 'bg-[#F6BE17] text-[#262F3F]' : 'bg-muted text-muted-foreground'
-                    )}>
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <h4 className="font-semibold text-foreground text-sm">{type.name}</h4>
-                        <span className={cn(
-                          'text-sm font-bold whitespace-nowrap',
-                          isSelected ? 'text-[#F6BE17]' : 'text-muted-foreground'
-                        )}>
-                          {formatCurrency(type.pricePerMinute)}/min
-                        </span>
-                      </div>
-                      <p className="text-xs text-muted-foreground mb-2">{type.description}</p>
-                      <p className="text-xs text-muted-foreground/80 italic">Ej: {type.example}</p>
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
         </motion.div>
 
         {/* Calculator */}
@@ -134,102 +105,78 @@ const BudgetCalculator = () => {
           className="max-w-5xl mx-auto"
         >
           <div className="grid lg:grid-cols-2 gap-6">
-            {/* Left Column - Parameters */}
+            {/* Left Column - Minutes Configuration */}
             <Card className="border-2 border-border hover:border-[#F6BE17]/30 transition-colors">
               <CardContent className="p-6 md:p-8">
-                <div className="mb-6">
-                  <h3 className="text-xl font-bold text-foreground mb-2">Parámetros del curso</h3>
+                <div className="mb-8">
+                  <h3 className="text-xl font-bold text-foreground mb-2">Configura tu curso</h3>
                   <p className="text-sm text-muted-foreground">
-                    Define la estructura del contenido que deseas producir
+                    Define cuántos minutos necesitas de cada tipo de producción
                   </p>
                 </div>
 
                 <div className="space-y-8">
-                  {/* Sections Slider */}
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="sections" className="text-base font-medium">
-                        Número de secciones
-                      </Label>
-                      <div className="flex items-center gap-2 bg-[#F6BE17]/10 px-4 py-2 rounded-lg">
-                        <span className="text-2xl font-bold text-[#262F3F]">{sections}</span>
-                      </div>
-                    </div>
-                    <Slider
-                      id="sections"
-                      min={1}
-                      max={20}
-                      step={1}
-                      value={[sections]}
-                      onValueChange={(value) => setSections(value[0])}
-                      className="[&_.bg-primary]:bg-[#F6BE17] [&_[role=slider]]:border-[#F6BE17]"
-                    />
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>1 sección</span>
-                      <span>20 secciones</span>
-                    </div>
-                  </div>
+                  {minutesConfig.map((config, index) => {
+                    const Icon = config.type.icon;
+                    const hasMinutes = config.value > 0;
 
-                  {/* Videos per Section Slider */}
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="videos" className="text-base font-medium">
-                        Videos por sección
-                      </Label>
-                      <div className="flex items-center gap-2 bg-[#F6BE17]/10 px-4 py-2 rounded-lg">
-                        <span className="text-2xl font-bold text-[#262F3F]">{videosPerSection}</span>
-                      </div>
-                    </div>
-                    <Slider
-                      id="videos"
-                      min={1}
-                      max={15}
-                      step={1}
-                      value={[videosPerSection]}
-                      onValueChange={(value) => setVideosPerSection(value[0])}
-                      className="[&_.bg-primary]:bg-[#F6BE17] [&_[role=slider]]:border-[#F6BE17]"
-                    />
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>1 video</span>
-                      <span>15 videos</span>
-                    </div>
-                  </div>
+                    return (
+                      <div key={config.type.id} className="space-y-4">
+                        <div className="flex items-start gap-3">
+                          <div className={cn(
+                            'w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors',
+                            hasMinutes ? 'bg-[#F6BE17] text-[#262F3F]' : 'bg-muted text-muted-foreground'
+                          )}>
+                            <Icon className="w-5 h-5" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2 mb-1">
+                              <Label htmlFor={config.type.id} className="text-base font-semibold text-foreground">
+                                {config.type.name}
+                              </Label>
+                              <div className={cn(
+                                'flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors',
+                                hasMinutes ? 'bg-[#F6BE17]/15' : 'bg-muted/50'
+                              )}>
+                                <span className={cn(
+                                  'text-xl font-bold',
+                                  hasMinutes ? 'text-[#262F3F]' : 'text-muted-foreground'
+                                )}>
+                                  {config.value}
+                                </span>
+                                <span className="text-xs text-muted-foreground">min</span>
+                              </div>
+                            </div>
+                            <p className="text-xs text-muted-foreground mb-1">{config.type.description}</p>
+                            <p className="text-xs text-muted-foreground/70 italic">Ej: {config.type.example}</p>
+                            <p className="text-xs font-medium text-[#F6BE17] mt-1">
+                              {formatCurrency(config.type.pricePerMinute)} por minuto
+                            </p>
+                          </div>
+                        </div>
 
-                  {/* Minutes per Video Slider */}
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="minutes" className="text-base font-medium">
-                        Minutos por video
-                      </Label>
-                      <div className="flex items-center gap-2 bg-[#F6BE17]/10 px-4 py-2 rounded-lg">
-                        <span className="text-2xl font-bold text-[#262F3F]">{minutesPerVideo}</span>
-                        <span className="text-sm text-muted-foreground">min</span>
+                        <Slider
+                          id={config.type.id}
+                          min={0}
+                          max={200}
+                          step={5}
+                          value={[config.value]}
+                          onValueChange={(value) => config.setValue(value[0])}
+                          className="[&_.bg-primary]:bg-[#F6BE17] [&_[role=slider]]:border-[#F6BE17]"
+                        />
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>0 min</span>
+                          <span>200 min</span>
+                        </div>
                       </div>
-                    </div>
-                    <Slider
-                      id="minutes"
-                      min={1}
-                      max={20}
-                      step={1}
-                      value={[minutesPerVideo]}
-                      onValueChange={(value) => setMinutesPerVideo(value[0])}
-                      className="[&_.bg-primary]:bg-[#F6BE17] [&_[role=slider]]:border-[#F6BE17]"
-                    />
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>1 min</span>
-                      <span>20 min</span>
-                    </div>
-                  </div>
+                    );
+                  })}
 
-                  {/* Quick Stats */}
-                  <div className="grid grid-cols-2 gap-4 pt-4 border-t">
-                    <div className="text-center p-3 bg-muted/50 rounded-lg">
-                      <div className="text-2xl font-bold text-foreground">{totalVideos}</div>
-                      <div className="text-xs text-muted-foreground">Videos totales</div>
-                    </div>
-                    <div className="text-center p-3 bg-muted/50 rounded-lg">
-                      <div className="text-2xl font-bold text-foreground">{totalMinutes}</div>
-                      <div className="text-xs text-muted-foreground">Minutos totales</div>
+                  {/* Total Minutes */}
+                  <div className="pt-6 border-t">
+                    <div className="flex items-center justify-between p-4 bg-[#F6BE17]/10 rounded-lg">
+                      <span className="font-semibold text-foreground">Total de minutos</span>
+                      <span className="text-2xl font-bold text-[#262F3F]">{totalMinutes} min</span>
                     </div>
                   </div>
                 </div>
@@ -242,70 +189,58 @@ const BudgetCalculator = () => {
                 <div className="mb-6">
                   <h3 className="text-xl font-bold text-foreground mb-2">Inversión única de producción</h3>
                   <p className="text-sm text-muted-foreground">
-                    Paga una sola vez por la producción de tu curso personalizado.
+                    Desglose detallado por tipo de contenido
                   </p>
                 </div>
 
-                <div className="space-y-6 flex-grow">
-                  {/* Selected Production Type */}
-                  <div className="flex items-center justify-between p-4 bg-[#F6BE17]/10 rounded-lg border border-[#F6BE17]/30">
-                    <div className="flex items-center gap-3">
-                      {selectedType && (
-                        <div className="w-10 h-10 rounded-full bg-[#F6BE17] flex items-center justify-center">
-                          <selectedType.icon className="w-5 h-5 text-[#262F3F]" />
+                <div className="space-y-4 flex-grow">
+                  {/* Production Cost Breakdown - Only show types with minutes > 0 */}
+                  {minutesConfig.map((config) => {
+                    if (config.value === 0) return null;
+                    const Icon = config.type.icon;
+
+                    return (
+                      <div key={config.type.id} className="flex justify-between items-start p-4 bg-background/50 rounded-lg">
+                        <div className="flex items-start gap-3 flex-1">
+                          <div className="w-8 h-8 rounded-lg bg-[#F6BE17]/20 flex items-center justify-center flex-shrink-0">
+                            <Icon className="w-4 h-4 text-[#262F3F]" />
+                          </div>
+                          <div>
+                            <p className="font-semibold text-foreground text-sm">{config.type.name}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {config.value} min × {formatCurrency(config.type.pricePerMinute)}
+                            </p>
+                          </div>
                         </div>
-                      )}
-                      <div>
-                        <span className="font-semibold text-foreground">{selectedType?.name}</span>
-                        <p className="text-xs text-muted-foreground">{formatCurrency(COST_PER_MINUTE)} por minuto</p>
+                        <p className="text-lg font-bold text-foreground">{formatCurrency(config.cost)}</p>
                       </div>
-                    </div>
-                  </div>
+                    );
+                  })}
 
-                  {/* Total Minutes */}
-                  <div className="flex items-center justify-between p-4 bg-background/50 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-[#F6BE17]/20 flex items-center justify-center">
-                        <Play className="w-5 h-5 text-[#262F3F]" />
-                      </div>
-                      <span className="font-medium">Total de minutos</span>
+                  {/* Show message if no minutes selected */}
+                  {totalMinutes === 0 && (
+                    <div className="p-4 bg-muted/30 rounded-lg text-center">
+                      <p className="text-sm text-muted-foreground">
+                        Configura los minutos de producción para ver el desglose
+                      </p>
                     </div>
-                    <span className="text-xl font-bold text-[#262F3F]">{totalMinutes} min</span>
-                  </div>
+                  )}
 
-                  {/* Production Cost Breakdown */}
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-start p-4 bg-background/50 rounded-lg">
-                      <div className="flex-1">
-                        <p className="font-semibold text-foreground mb-1">Producción de videos</p>
-                        <p className="text-sm text-muted-foreground">
-                          {totalMinutes} min × {formatCurrency(COST_PER_MINUTE)}/min
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-xl font-bold text-foreground">{formatCurrency(productionCost)}</p>
-                      </div>
+                  {/* Exam + Certificate */}
+                  <div className="flex justify-between items-start p-4 bg-background/50 rounded-lg">
+                    <div className="flex-1">
+                      <p className="font-semibold text-foreground text-sm">Examen + Certificado</p>
+                      <p className="text-xs text-muted-foreground">Diseño único por curso</p>
                     </div>
-
-                    <div className="flex justify-between items-start p-4 bg-background/50 rounded-lg">
-                      <div className="flex-1">
-                        <p className="font-semibold text-foreground mb-1">Examen + Certificado</p>
-                        <p className="text-sm text-muted-foreground">Diseño único por curso</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-xl font-bold text-foreground">{formatCurrency(EXAM_CERT_COST)}</p>
-                      </div>
-                    </div>
+                    <p className="text-lg font-bold text-foreground">{formatCurrency(EXAM_CERT_COST)}</p>
                   </div>
                 </div>
 
                 {/* Total Investment - Highlighted */}
                 <div className="mt-6 p-6 bg-[#262F3F] rounded-xl text-white">
-                  <div className="flex items-center justify-between mb-2">
-                    <div>
-                      <p className="text-sm opacity-80 mb-1">Inversión total</p>
-                      <p className="text-4xl font-black">{formatCurrency(totalCost)}</p>
-                    </div>
+                  <div className="mb-2">
+                    <p className="text-sm opacity-80 mb-1">Inversión total</p>
+                    <p className="text-4xl font-black">{formatCurrency(totalCost)}</p>
                   </div>
                   <div className="flex items-center gap-2 text-sm opacity-90 mt-4 pt-4 border-t border-white/20">
                     <CheckCircle2 className="w-4 h-4 text-[#F6BE17]" />
