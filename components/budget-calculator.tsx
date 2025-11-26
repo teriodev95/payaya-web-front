@@ -6,6 +6,7 @@ import { CustomBadge } from '@/components/custom/badge';
 import { CustomTitle } from '@/components/custom/title';
 import { CustomSubtitle } from '@/components/custom/subtitle';
 import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { CheckCircle2, Video, Monitor, Bot } from 'lucide-react';
@@ -116,7 +117,7 @@ const BudgetCalculator = () => {
                 </div>
 
                 <div className="space-y-8">
-                  {minutesConfig.map((config, index) => {
+                  {minutesConfig.map((config) => {
                     const Icon = config.type.icon;
                     const hasMinutes = config.value > 0;
 
@@ -135,15 +136,23 @@ const BudgetCalculator = () => {
                                 {config.type.name}
                               </Label>
                               <div className={cn(
-                                'flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors',
+                                'flex items-center gap-1 px-2 py-1 rounded-lg transition-colors',
                                 hasMinutes ? 'bg-[#F6BE17]/15' : 'bg-muted/50'
                               )}>
-                                <span className={cn(
-                                  'text-xl font-bold',
-                                  hasMinutes ? 'text-[#262F3F]' : 'text-muted-foreground'
-                                )}>
-                                  {config.value}
-                                </span>
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  max={200}
+                                  value={config.value}
+                                  onChange={(e) => {
+                                    const val = Math.min(200, Math.max(0, parseInt(e.target.value) || 0));
+                                    config.setValue(val);
+                                  }}
+                                  className={cn(
+                                    'w-16 h-8 text-center text-lg font-bold border-0 bg-transparent p-0 focus-visible:ring-0 focus-visible:ring-offset-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none',
+                                    hasMinutes ? 'text-[#262F3F]' : 'text-muted-foreground'
+                                  )}
+                                />
                                 <span className="text-xs text-muted-foreground">min</span>
                               </div>
                             </div>
@@ -159,7 +168,7 @@ const BudgetCalculator = () => {
                           id={config.type.id}
                           min={0}
                           max={200}
-                          step={5}
+                          step={1}
                           value={[config.value]}
                           onValueChange={(value) => config.setValue(value[0])}
                           className="[&_.bg-primary]:bg-[#F6BE17] [&_[role=slider]]:border-[#F6BE17]"
