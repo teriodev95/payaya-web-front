@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { Check, Star, MessageCircle } from 'lucide-react';
+import { Check, Star, Building2, Code2, Shield, Handshake } from 'lucide-react';
 import { useState } from 'react';
 import { CustomTitle } from './custom/title';
 import { CustomSubtitle } from './custom/subtitle';
@@ -223,57 +223,90 @@ const Pricing = () => {
           ))}
         </div>
 
-        {/* Custom Plan - Full width banner */}
+        {/* Enterprise Section - Dark premium card */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
           viewport={{ once: true }}
-          className="max-w-5xl mx-auto"
+          className="max-w-5xl mx-auto mt-4"
         >
-          <Card className="border-dashed border-2 border-border/60 bg-muted/20 hover:border-[#F6BE17]/40 transition-colors">
-            <CardContent className="p-8">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-lg bg-[#F6BE17]/15 flex items-center justify-center">
-                      <MessageCircle className="w-5 h-5 text-[#F6BE17]" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-foreground">A tu medida</h3>
-                      <p className="text-sm text-muted-foreground">Configuración específica para tu operación</p>
-                    </div>
+          <Card className="border border-white/10 bg-gradient-to-br from-[#262F3F] to-[#1a212d] text-white overflow-hidden relative">
+            {/* Decorative blur elements */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#F6BE17]/8 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#F6BE17]/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
+
+            <CardContent className="p-10 lg:p-12 relative z-10">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+                {/* Left - Content (8 cols) */}
+                <div className="lg:col-span-8">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#F6BE17]/15 border border-[#F6BE17]/20 rounded-full mb-5">
+                    <Building2 className="w-3.5 h-3.5 text-[#F6BE17]" />
+                    <span className="text-xs font-medium text-[#F6BE17]">Corporativos y gobierno</span>
                   </div>
 
-                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-[#F6BE17] flex-shrink-0" />
-                      <span className="text-sm text-muted-foreground">Selección de módulos según tu operación</span>
+                  <h3 className="text-2xl lg:text-3xl font-bold mb-4">Proyectos especiales</h3>
+                  <p className="text-white/60 text-sm lg:text-base leading-relaxed mb-8 max-w-2xl">
+                    Desarrollamos soluciones a medida para corporativos, instituciones gubernamentales y organizaciones con necesidades específicas. También colaboramos con empresas que buscan alianzas estratégicas.
+                  </p>
+
+                  {/* Features grid - 2x2 balanced */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+                        <Code2 className="w-5 h-5 text-[#F6BE17]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold">Plataforma personalizada</p>
+                        <p className="text-xs text-white/50">Si Payaya no se adapta, la construimos</p>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-[#F6BE17] flex-shrink-0" />
-                      <span className="text-sm text-muted-foreground">Integración con tus sistemas actuales</span>
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+                        <Building2 className="w-5 h-5 text-[#F6BE17]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold">Sistemas institucionales</p>
+                        <p className="text-xs text-white/50">SAP, Oracle, AD, sistemas de gobierno</p>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-[#F6BE17] flex-shrink-0" />
-                      <span className="text-sm text-muted-foreground">Estructura de usuarios y permisos a medida</span>
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+                        <Shield className="w-5 h-5 text-[#F6BE17]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold">Cumplimiento normativo</p>
+                        <p className="text-xs text-white/50">LFPDPPP, GDPR, sector público</p>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-[#F6BE17] flex-shrink-0" />
-                      <span className="text-sm text-muted-foreground">Condiciones comerciales negociables</span>
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+                        <Handshake className="w-5 h-5 text-[#F6BE17]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold">Alianzas estratégicas</p>
+                        <p className="text-xs text-white/50">Abiertos a colaboraciones</p>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col items-center md:items-end gap-3">
-                  <p className="text-sm text-[#F6BE17] font-medium">Hablemos de lo que necesitas</p>
+                {/* Right - CTA (4 cols) */}
+                <div className="lg:col-span-4 flex flex-col items-center lg:items-center gap-5 lg:border-l lg:border-white/10 lg:pl-10">
+                  <div className="text-center">
+                    <p className="text-[11px] text-white/40 uppercase tracking-widest mb-3">Ideal para</p>
+                    <div className="flex flex-col gap-1.5">
+                      <span className="text-sm font-medium text-white/90">Corporativos</span>
+                      <span className="text-sm font-medium text-white/90">Gobierno</span>
+                      <span className="text-sm font-medium text-white/90">Partners</span>
+                    </div>
+                  </div>
                   <Button
                     size="lg"
-                    variant="outline"
-                    className="min-w-[200px] border-[#F6BE17]/50 hover:bg-[#F6BE17]/10 hover:border-[#F6BE17]"
+                    className="bg-[#F6BE17] hover:bg-[#d9a614] text-[#262F3F] font-semibold px-8 mt-2"
                     onClick={() => scrollToSection('contact')}
                   >
-                    Solicitar cotización
+                    Conversemos
                   </Button>
                 </div>
               </div>
