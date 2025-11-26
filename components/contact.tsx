@@ -127,63 +127,63 @@ const Contact = () => {
           </CustomSubtitle>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 max-w-5xl mx-auto">
           {/* Contact Information */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="space-y-8"
+            className="lg:col-span-2 flex flex-col"
           >
-            <div>
-              <h3 className="text-2xl font-bold mb-4 text-foreground">
+            <div className="mb-6">
+              <h3 className="text-xl font-bold mb-3 text-foreground">
                 Comencemos una conversación
               </h3>
-              <p className="text-muted-foreground leading-relaxed mb-4">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 Ya sea que busques optimizar la capacitación, profesionalizar los procesos de tu organización o crear cursos desde cero, nuestro equipo está listo para ayudarte.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                Te guiaremos paso a paso para que puedas lanzar tu propia academia interna en Payaya.
               </p>
             </div>
 
             {/* Contact Info Cards */}
-            <div className="space-y-4">
-              {contactInfo.map((info, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <Card className="border-border hover:border-[#F6BE17]/50 transition-colors">
-                    <CardContent className="p-4 flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-[#F6BE17]/10 flex items-center justify-center flex-shrink-0">
-                        <info.icon className="w-5 h-5 text-[#262F3F]" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-foreground mb-1">
-                          {info.title}
-                        </h4>
-                        {info.href ? (
-                          <Link
-                            href={info.href}
-                            className="text-muted-foreground hover:text-[#F6BE17] transition-colors"
-                          >
-                            {info.content}
-                          </Link>
-                        ) : (
-                          <p className="text-muted-foreground">
-                            {info.content}
-                          </p>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
+            <div className="space-y-3 flex-grow">
+              {/* Email & Location in a row on desktop */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+                {contactInfo.map((info, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    <Card className="border-border hover:border-[#F6BE17]/50 transition-colors h-full">
+                      <CardContent className="p-3 flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-[#F6BE17]/10 flex items-center justify-center flex-shrink-0">
+                          <info.icon className="w-4 h-4 text-[#262F3F]" />
+                        </div>
+                        <div className="min-w-0">
+                          <h4 className="font-semibold text-foreground text-sm">
+                            {info.title}
+                          </h4>
+                          {info.href ? (
+                            <Link
+                              href={info.href}
+                              className="text-sm text-muted-foreground hover:text-[#F6BE17] transition-colors truncate block"
+                            >
+                              {info.content}
+                            </Link>
+                          ) : (
+                            <p className="text-sm text-muted-foreground truncate">
+                              {info.content}
+                            </p>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
 
               {/* WhatsApp Card */}
               <motion.div
@@ -197,20 +197,20 @@ const Contact = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Card className="border-2 border-[#25D366]/20 hover:border-[#25D366] transition-all hover:shadow-md cursor-pointer group bg-gradient-to-br from-background to-[#25D366]/5">
-                    <CardContent className="p-4 flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-[#25D366]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#25D366]/20 transition-colors">
-                        <MessageCircle className="w-5 h-5 text-[#25D366]" />
+                  <Card className="border-2 border-[#25D366]/30 hover:border-[#25D366] transition-all hover:shadow-md cursor-pointer group bg-[#25D366]/5">
+                    <CardContent className="p-3 flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-[#25D366]/15 flex items-center justify-center flex-shrink-0 group-hover:bg-[#25D366]/25 transition-colors">
+                        <MessageCircle className="w-4 h-4 text-[#25D366]" />
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-foreground mb-1 group-hover:text-[#25D366] transition-colors">
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-foreground text-sm group-hover:text-[#25D366] transition-colors">
                           WhatsApp
                         </h4>
-                        <p className="text-sm text-muted-foreground">
-                          Chatea con nosotros ahora
+                        <p className="text-xs text-muted-foreground">
+                          Respuesta inmediata
                         </p>
                       </div>
-                      <div className="text-[#25D366] group-hover:translate-x-1 transition-transform">
+                      <div className="text-[#25D366] group-hover:translate-x-1 transition-transform text-lg">
                         →
                       </div>
                     </CardContent>
@@ -230,20 +230,20 @@ const Contact = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Card className="border-2 border-[#1877F2]/20 hover:border-[#1877F2] transition-all hover:shadow-md cursor-pointer group bg-gradient-to-br from-background to-[#1877F2]/5">
-                    <CardContent className="p-4 flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-[#1877F2]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#1877F2]/20 transition-colors">
-                        <Facebook className="w-5 h-5 text-[#1877F2]" />
+                  <Card className="border-border hover:border-[#1877F2]/50 transition-all cursor-pointer group">
+                    <CardContent className="p-3 flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-[#1877F2]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#1877F2]/20 transition-colors">
+                        <Facebook className="w-4 h-4 text-[#1877F2]" />
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-foreground mb-1 group-hover:text-[#1877F2] transition-colors">
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-foreground text-sm group-hover:text-[#1877F2] transition-colors">
                           Facebook
                         </h4>
-                        <p className="text-sm text-muted-foreground">
-                          Síguenos en Facebook
+                        <p className="text-xs text-muted-foreground">
+                          Síguenos
                         </p>
                       </div>
-                      <div className="text-[#1877F2] group-hover:translate-x-1 transition-transform">
+                      <div className="text-[#1877F2] group-hover:translate-x-1 transition-transform text-lg">
                         →
                       </div>
                     </CardContent>
@@ -259,88 +259,95 @@ const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
+            className="lg:col-span-3"
           >
-            <Card className="border-2 border-border hover:border-[#F6BE17]/30 transition-colors">
-              <CardContent className="p-6 md:p-8">
+            <Card className="border-2 border-border hover:border-[#F6BE17]/30 transition-colors h-full">
+              <CardContent className="p-6">
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Nombre</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Tu nombre completo" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Teléfono</FormLabel>
-                          <FormControl>
-                            <Input placeholder="+52 55 1234 5678" type="tel" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="website"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Página web <span className="text-muted-foreground text-xs">(opcional)</span></FormLabel>
-                          <FormControl>
-                            <Input placeholder="https://tu-empresa.com" type="url" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="subject"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Asunto</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                    {/* Name and Phone in a row */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-sm">Nombre</FormLabel>
                             <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Selecciona un asunto" />
-                              </SelectTrigger>
+                              <Input placeholder="Tu nombre completo" {...field} />
                             </FormControl>
-                            <SelectContent>
-                              {subjectOptions.map((option) => (
-                                <SelectItem key={option} value={option}>
-                                  {option}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-sm">Teléfono</FormLabel>
+                            <FormControl>
+                              <Input placeholder="+52 55 1234 5678" type="tel" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    {/* Website and Subject in a row */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="website"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-sm">Empresa <span className="text-muted-foreground text-xs">(opcional)</span></FormLabel>
+                            <FormControl>
+                              <Input placeholder="https://tu-empresa.com" type="url" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="subject"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-sm">Asunto</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Selecciona un asunto" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {subjectOptions.map((option) => (
+                                  <SelectItem key={option} value={option}>
+                                    {option}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
                     <FormField
                       control={form.control}
                       name="message"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Mensaje <span className="text-muted-foreground text-xs">(opcional)</span></FormLabel>
+                          <FormLabel className="text-sm">Mensaje <span className="text-muted-foreground text-xs">(opcional)</span></FormLabel>
                           <FormControl>
                             <Textarea
                               placeholder="Cuéntanos más sobre tu proyecto o qué te gustaría lograr con Payaya"
-                              className="min-h-[140px] resize-none"
+                              className="min-h-[100px] resize-none"
                               {...field}
                             />
                           </FormControl>
@@ -366,7 +373,7 @@ const Contact = () => {
                     </Button>
 
                     {/* Microcopy */}
-                    <p className="text-sm text-center text-muted-foreground leading-relaxed pt-2">
+                    <p className="text-xs text-center text-muted-foreground leading-relaxed">
                       Nuestro equipo te contactará para agendar una breve llamada o demo según tus horarios.
                     </p>
                   </form>
