@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { Check, Star } from 'lucide-react';
+import { Check, Star, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
 import { CustomTitle } from './custom/title';
 import { CustomSubtitle } from './custom/subtitle';
@@ -29,7 +29,6 @@ const Pricing = () => {
       description: 'PYMES que inician su capacitación digital',
       subDescription: function () {
         if (!isYearly) return 'Compra mínima: 100 usuarios';
-
         return `Compra mínima: 100 usuarios · Ahorra ${formatCurrency(calcYearlySaving(this.monthlyPrice))} / año por usuario`;
       },
       features: [
@@ -50,7 +49,6 @@ const Pricing = () => {
       description: 'Empresas medianas con equipos múltiples',
       subDescription: function () {
         if (!isYearly) return 'Compra mínima: 200 usuarios';
-
         return `Compra mínima: 200 usuarios · Ahorra ${formatCurrency(calcYearlySaving(this.monthlyPrice))} / año por usuario`;
       },
       features: [
@@ -71,7 +69,6 @@ const Pricing = () => {
       description: 'Corporativos con estructura regional',
       subDescription: function () {
         if (!isYearly) return 'Compra mínima: 500 usuarios';
-
         return `Compra mínima: 500 usuarios · Ahorra ${formatCurrency(calcYearlySaving(this.monthlyPrice))} / año por usuario`;
       },
       features: [
@@ -84,21 +81,6 @@ const Pricing = () => {
         'Consultoría estratégica'
       ],
       popular: false
-    },
-    {
-      name: 'A tu medida',
-      customPrice: 'Solicitar cotización',
-      description: 'Configuración específica para tu operación',
-      subDescription: function () {
-        return 'Hablemos de lo que necesitas';
-      },
-      features: [
-        'Selección de módulos según tu operación',
-        'Integración con tus sistemas actuales',
-        'Estructura de usuarios y permisos a medida',
-        'Condiciones comerciales negociables',
-      ],
-      popular: false
     }
   ];
 
@@ -106,144 +88,198 @@ const Pricing = () => {
     <section id="pricing" className="py-24 bg-background border-b border-border/50">
       <div className="container mx-auto px-6">
         {/* Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          viewport={{ once: true }} className="flex items-center justify-center flex-col text-center gap-5">
-          <CustomBadge>
-            Planes
-          </CustomBadge>
+          viewport={{ once: true }}
+          className="flex items-center justify-center flex-col text-center gap-5 mb-16"
+        >
+          <CustomBadge>Planes</CustomBadge>
 
-          <CustomTitle>
-            Planes escalables y claros
-          </CustomTitle>
+          <CustomTitle>Planes escalables y claros</CustomTitle>
 
-          <CustomSubtitle className="mb-10">
+          <CustomSubtitle>
             Invierte una vez al año con nuestro plan Anual, ahorra hasta 19% y olvídate de pagos mensuales.
             <br />
-            <small>(Todas las opciones incluyen infraestructura, respaldos y soporte)</small>
+            <small className="text-muted-foreground/70">(Todas las opciones incluyen infraestructura, respaldos y soporte)</small>
           </CustomSubtitle>
 
           {/* Pricing Period Toggle */}
-          <div className="flex items-center justify-center mb-18">
+          <div className="flex items-center justify-center">
             <ToggleGroup
               type="single"
               value={billingPeriod}
               onValueChange={(value) => value && setBillingPeriod(value)}
-              className="bg-accent rounded-xl gap-1 p-1.5"
+              className="bg-muted/50 rounded-xl gap-1 p-1.5"
             >
               <ToggleGroupItem
                 value="monthly"
-                className="cursor-pointer flex items-center rounded-lg text-sm font-medium px-6 py-2 data-[state=on]:bg-background data-[state=on]:shadow-sm"
+                className="cursor-pointer flex items-center rounded-lg text-sm font-medium px-6 py-2.5 data-[state=on]:bg-background data-[state=on]:shadow-sm transition-all"
               >
                 Mensual
               </ToggleGroupItem>
               <ToggleGroupItem
                 value="yearly"
-                className="cursor-pointer rounded-lg text-sm font-medium px-6 py-2 data-[state=on]:bg-background data-[state=on]:shadow-sm flex items-center gap-2"
+                className="cursor-pointer rounded-lg text-sm font-medium px-6 py-2.5 data-[state=on]:bg-background data-[state=on]:shadow-sm flex items-center gap-2 transition-all"
               >
                 Anual
-                <Badge variant="outline" className="leading-0 rounded-sm px-1 py-0.5 text-[11px] bg-[#F6BE17]/20 border-[#F6BE17]/30 text-[#262F3F] dark:text-[#F6BE17] dark:bg-[#F6BE17]/20 dark:border-[#F6BE17]/30 font-semibold">
-                  Ahorra 19%
+                <Badge variant="outline" className="rounded-md px-1.5 py-0.5 text-[11px] bg-[#F6BE17]/15 border-[#F6BE17]/25 text-[#262F3F] font-semibold">
+                  -19%
                 </Badge>
               </ToggleGroupItem>
             </ToggleGroup>
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {/* Plans Grid - 3 columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
+              className={cn(
+                'relative',
+                plan.popular && 'lg:-mt-4 lg:mb-4'
+              )}
             >
               <Card className={cn(
-                'h-full relative transition-all duration-300 group',
-                plan.popular ? 'border-[#F6BE17] shadow-2xl scale-105' : 'border-border hover:border-[#F6BE17]'
-                )}
-              >
+                'h-full relative transition-all duration-300',
+                plan.popular
+                  ? 'border-[#F6BE17] shadow-xl bg-gradient-to-b from-[#F6BE17]/5 to-transparent'
+                  : 'border-border/60 hover:border-[#F6BE17]/50 hover:shadow-md'
+              )}>
                 {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-gradient-to-r from-[#F6BE17] to-[#d9a614] text-[#262F3F] px-2.5 py-1">
-                      <Star className="h-3 w-3 me-0.5" />
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                    <Badge className="bg-[#F6BE17] text-[#262F3F] px-3 py-1 text-xs font-semibold shadow-sm">
+                      <Star className="h-3 w-3 mr-1" />
                       Más popular
                     </Badge>
                   </div>
                 )}
-                
-                <CardHeader className="text-center py-6">
-                  <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
-                  <CardDescription className="text-muted-foreground mb-2">
+
+                <CardHeader className="text-center pt-8 pb-4 px-6">
+                  <CardTitle className="text-xl font-bold text-foreground">{plan.name}</CardTitle>
+                  <CardDescription className="text-sm text-muted-foreground mt-1">
                     {plan.description}
                   </CardDescription>
-                  {plan.subDescription && (
-                    <CardDescription className="text-xs text-[#F6BE17] font-medium mb-3">
-                      {plan.subDescription()}
-                    </CardDescription>
-                  )}
-                  <div className="flex items-end justify-center">
-                    <div className="relative h-16 flex items-end">
+
+                  {/* Price */}
+                  <div className="mt-6 mb-2">
+                    <div className="flex items-baseline justify-center gap-1">
                       <AnimatePresence mode="popLayout">
                         <motion.span
                           key={isYearly ? 'yearly' : 'monthly'}
-                          initial={{ opacity: 0, y: 20, scale: 0.8 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -20, scale: 0.8 }}
-                          transition={{
-                            duration: 0.2,
-                            ease: "easeInOut"
-                          }}
-                          className="text-3xl font-bold bg-gradient-to-r from-[#F6BE17] to-[#d9a614] bg-clip-text text-transparent relative"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                          className="text-4xl font-bold bg-gradient-to-r from-[#F6BE17] to-[#d9a614] bg-clip-text text-transparent"
                         >
-                          {
-                            plan.customPrice !== undefined ?
-                              plan.customPrice :
-                              (
-                                isYearly ?
-                                  formatCurrency(Number(plan.monthlyPrice) * 12 - calcYearlySaving(plan.monthlyPrice)) :
-                                  formatCurrency(plan.monthlyPrice)
-                              )
+                          {isYearly
+                            ? formatCurrency(Number(plan.monthlyPrice) * 12 - calcYearlySaving(plan.monthlyPrice))
+                            : formatCurrency(plan.monthlyPrice)
                           }
                         </motion.span>
                       </AnimatePresence>
+                      <span className="text-sm text-muted-foreground">{plan.period}</span>
                     </div>
-                    <span className="text-muted-foreground ms-1 mb-1">{plan.period}</span>
                   </div>
+
+                  <p className="text-xs text-[#F6BE17] font-medium">
+                    {plan.subDescription()}
+                  </p>
                 </CardHeader>
 
-                <CardContent className="space-y-4">
-                  <ul className="space-y-3">
+                <CardContent className="px-6 pb-8">
+                  <ul className="space-y-3 mb-8">
                     {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center">
-                        <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                        <span className="text-muted-foreground">{feature}</span>
+                      <li key={featureIndex} className="flex items-start gap-3">
+                        <Check className="h-4 w-4 text-[#F6BE17] mt-0.5 flex-shrink-0" />
+                        <span className="text-sm text-muted-foreground">{feature}</span>
                       </li>
                     ))}
                   </ul>
-                  
-                  <motion.div
-                    whileHover={{ scale: 1.025 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="pt-6"
+
+                  <Button
+                    className={cn(
+                      'w-full transition-all',
+                      plan.popular
+                        ? 'bg-[#F6BE17] hover:bg-[#d9a614] text-[#262F3F] font-semibold'
+                        : ''
+                    )}
+                    size="lg"
+                    variant={plan.popular ? "default" : "outline"}
+                    onClick={() => scrollToSection('contact')}
                   >
-                    <Button
-                      className="w-full cursor-pointer"
-                      size="lg"
-                      variant={plan.popular ? "default" : "outline"}
-                      onClick={() => scrollToSection('contact')}
-                    >
-                      Hablar con ventas
-                    </Button>
-                  </motion.div>
+                    Hablar con ventas
+                  </Button>
                 </CardContent>
               </Card>
             </motion.div>
           ))}
         </div>
+
+        {/* Custom Plan - Full width banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="max-w-5xl mx-auto"
+        >
+          <Card className="border-dashed border-2 border-border/60 bg-muted/20 hover:border-[#F6BE17]/40 transition-colors">
+            <CardContent className="p-8">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-10 h-10 rounded-lg bg-[#F6BE17]/15 flex items-center justify-center">
+                      <MessageCircle className="w-5 h-5 text-[#F6BE17]" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-foreground">A tu medida</h3>
+                      <p className="text-sm text-muted-foreground">Configuración específica para tu operación</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-[#F6BE17] flex-shrink-0" />
+                      <span className="text-sm text-muted-foreground">Selección de módulos según tu operación</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-[#F6BE17] flex-shrink-0" />
+                      <span className="text-sm text-muted-foreground">Integración con tus sistemas actuales</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-[#F6BE17] flex-shrink-0" />
+                      <span className="text-sm text-muted-foreground">Estructura de usuarios y permisos a medida</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-[#F6BE17] flex-shrink-0" />
+                      <span className="text-sm text-muted-foreground">Condiciones comerciales negociables</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-center md:items-end gap-3">
+                  <p className="text-sm text-[#F6BE17] font-medium">Hablemos de lo que necesitas</p>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="min-w-[200px] border-[#F6BE17]/50 hover:bg-[#F6BE17]/10 hover:border-[#F6BE17]"
+                    onClick={() => scrollToSection('contact')}
+                  >
+                    Solicitar cotización
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </section>
   );
