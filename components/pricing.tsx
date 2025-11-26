@@ -28,9 +28,9 @@ const Pricing = () => {
       period: isYearly ? '/año por usuario' : '/mes por usuario',
       description: 'PYMES que inician su capacitación digital',
       subDescription: function () {
-        if (!isYearly) return 'Compra mínima: 50 usuarios';
+        if (!isYearly) return 'Compra mínima: 100 usuarios';
 
-        return `Compra mínima: 50 usuarios · Ahorra ${formatCurrency(calcYearlySaving(this.monthlyPrice))} / año por usuario`;
+        return `Compra mínima: 100 usuarios · Ahorra ${formatCurrency(calcYearlySaving(this.monthlyPrice))} / año por usuario`;
       },
       features: [
         'PWA móvil optimizada',
@@ -86,16 +86,17 @@ const Pricing = () => {
       popular: false
     },
     {
-      name: 'Empresarial',
-      customPrice: 'Contáctanos',
-      description: 'Empresas con necesidades únicas',
+      name: 'A tu medida',
+      customPrice: 'Solicitar cotización',
+      description: 'Configuración específica para tu operación',
       subDescription: function () {
-        return '1000+ usuarios';
+        return 'Hablemos de lo que necesitas';
       },
       features: [
-        'Todo lo de Max',
-        'Personaliza tu experiencia',
-        'Escoge las funcionalidades que necesites',
+        'Selección de módulos según tu operación',
+        'Integración con tus sistemas actuales',
+        'Estructura de usuarios y permisos a medida',
+        'Condiciones comerciales negociables',
       ],
       popular: false
     }
