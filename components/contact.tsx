@@ -88,20 +88,6 @@ const Contact = () => {
     'Otro asunto'
   ];
 
-  const contactInfo = [
-    {
-      icon: Mail,
-      title: 'Email',
-      content: 'adrian@payaya.cc',
-      href: 'mailto:adrian@payaya.cc'
-    },
-    {
-      icon: MapPin,
-      title: 'Ubicación',
-      content: 'Ciudad de México, México',
-    },
-  ];
-
   return (
     <section id="contact" className="py-24 bg-muted/30 border-b border-border/50">
       <div className="container mx-auto px-6">
@@ -128,129 +114,100 @@ const Contact = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 max-w-5xl mx-auto">
-          {/* Contact Information */}
+          {/* Contact Information - Creative Card */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="lg:col-span-2 flex flex-col"
+            className="lg:col-span-2"
           >
-            <div className="mb-6">
-              <h3 className="text-xl font-bold mb-3 text-foreground">
-                Comencemos una conversación
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Ya sea que busques optimizar la capacitación, profesionalizar los procesos de tu organización o crear cursos desde cero, nuestro equipo está listo para ayudarte.
-              </p>
-            </div>
+            <Card className="border-2 border-border bg-gradient-to-br from-[#262F3F] to-[#1a212d] text-white h-full overflow-hidden relative">
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#F6BE17]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#F6BE17]/5 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
 
-            {/* Contact Info Cards */}
-            <div className="space-y-3 flex-grow">
-              {/* Email & Location in a row on desktop */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
-                {contactInfo.map((info, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                  >
-                    <Card className="border-border hover:border-[#F6BE17]/50 transition-colors h-full">
-                      <CardContent className="p-3 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-[#F6BE17]/10 flex items-center justify-center flex-shrink-0">
-                          <info.icon className="w-4 h-4 text-[#262F3F]" />
-                        </div>
-                        <div className="min-w-0">
-                          <h4 className="font-semibold text-foreground text-sm">
-                            {info.title}
-                          </h4>
-                          {info.href ? (
-                            <Link
-                              href={info.href}
-                              className="text-sm text-muted-foreground hover:text-[#F6BE17] transition-colors truncate block"
-                            >
-                              {info.content}
-                            </Link>
-                          ) : (
-                            <p className="text-sm text-muted-foreground truncate">
-                              {info.content}
-                            </p>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
+              <CardContent className="p-6 relative z-10 flex flex-col h-full">
+                {/* Header */}
+                <div className="mb-6">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#F6BE17]/20 rounded-full mb-4">
+                    <div className="w-2 h-2 bg-[#F6BE17] rounded-full animate-pulse" />
+                    <span className="text-xs font-medium text-[#F6BE17]">Disponibles para ti</span>
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">
+                    Hablemos de tu proyecto
+                  </h3>
+                  <p className="text-sm text-white/70 leading-relaxed">
+                    Nuestro equipo te ayudará a crear la academia interna que tu organización necesita.
+                  </p>
+                </div>
 
-              {/* WhatsApp Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
-              >
+                {/* Contact Info - Minimal style */}
+                <div className="space-y-4 mb-6 flex-grow">
+                  <div className="flex items-center gap-3 group">
+                    <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#F6BE17]/20 transition-colors">
+                      <Mail className="w-4 h-4 text-[#F6BE17]" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-white/50 uppercase tracking-wide">Email</p>
+                      <Link
+                        href="mailto:adrian@payaya.cc"
+                        className="text-sm font-medium hover:text-[#F6BE17] transition-colors"
+                      >
+                        adrian@payaya.cc
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 group">
+                    <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#F6BE17]/20 transition-colors">
+                      <MapPin className="w-4 h-4 text-[#F6BE17]" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-white/50 uppercase tracking-wide">Ubicación</p>
+                      <p className="text-sm font-medium">Ciudad de México</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div className="border-t border-white/10 my-4" />
+
+                {/* WhatsApp CTA - Prominent */}
                 <Link
                   href="https://api.whatsapp.com/send?phone=524432391799&text=Hola%20me%20interesa%20agendar%20una%20reuni%C3%B3n%20para%20charlar%20sobre%20su%20plataforma%20Payaya"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="group"
                 >
-                  <Card className="border-2 border-[#25D366]/30 hover:border-[#25D366] transition-all hover:shadow-md cursor-pointer group bg-[#25D366]/5">
-                    <CardContent className="p-3 flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-[#25D366]/15 flex items-center justify-center flex-shrink-0 group-hover:bg-[#25D366]/25 transition-colors">
-                        <MessageCircle className="w-4 h-4 text-[#25D366]" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-foreground text-sm group-hover:text-[#25D366] transition-colors">
-                          WhatsApp
-                        </h4>
-                        <p className="text-xs text-muted-foreground">
-                          Respuesta inmediata
-                        </p>
-                      </div>
-                      <div className="text-[#25D366] group-hover:translate-x-1 transition-transform text-lg">
-                        →
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <div className="flex items-center gap-3 p-3 bg-[#25D366] hover:bg-[#22c55e] rounded-xl transition-all hover:shadow-lg hover:shadow-[#25D366]/25">
+                    <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
+                      <MessageCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-white">Chatea por WhatsApp</p>
+                      <p className="text-xs text-white/80">Respuesta inmediata</p>
+                    </div>
+                    <div className="text-white group-hover:translate-x-1 transition-transform">
+                      →
+                    </div>
+                  </div>
                 </Link>
-              </motion.div>
 
-              {/* Facebook Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                viewport={{ once: true }}
-              >
-                <Link
-                  href="https://www.facebook.com/profile.php?id=61583637895869"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Card className="border-border hover:border-[#1877F2]/50 transition-all cursor-pointer group">
-                    <CardContent className="p-3 flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-[#1877F2]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#1877F2]/20 transition-colors">
-                        <Facebook className="w-4 h-4 text-[#1877F2]" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-foreground text-sm group-hover:text-[#1877F2] transition-colors">
-                          Facebook
-                        </h4>
-                        <p className="text-xs text-muted-foreground">
-                          Síguenos
-                        </p>
-                      </div>
-                      <div className="text-[#1877F2] group-hover:translate-x-1 transition-transform text-lg">
-                        →
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </motion.div>
-            </div>
+                {/* Social Links - Minimal */}
+                <div className="flex items-center gap-3 mt-4 pt-2">
+                  <span className="text-xs text-white/40">Síguenos:</span>
+                  <Link
+                    href="https://www.facebook.com/profile.php?id=61583637895869"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 rounded-lg bg-white/10 hover:bg-[#1877F2]/30 flex items-center justify-center transition-colors group"
+                  >
+                    <Facebook className="w-4 h-4 text-white/70 group-hover:text-white" />
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
           </motion.div>
 
           {/* Contact Form */}
