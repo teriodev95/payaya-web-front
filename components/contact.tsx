@@ -132,7 +132,7 @@ const Contact = () => {
                 <div className="mb-6">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#F6BE17]/20 rounded-full mb-4">
                     <div className="w-2 h-2 bg-[#F6BE17] rounded-full animate-pulse" />
-                    <span className="text-xs font-medium text-[#F6BE17]">Respuesta en menos de 24h</span>
+                    <span className="text-xs font-medium text-[#F6BE17]">Atención personalizada</span>
                   </div>
                   <h3 className="text-xl font-bold mb-2">
                     Contacto directo
